@@ -85,6 +85,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="app.config" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -94,6 +95,16 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GestureRecognition.Data\GestureRecognition.Data.csproj">
+      <Project>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</Project>
+      <Name>GestureRecognition.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MackiTools\MackiTools.csproj">
+      <Project>{4B8090B6-4936-4DD9-8178-EAB547C98B73}</Project>
+      <Name>MackiTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

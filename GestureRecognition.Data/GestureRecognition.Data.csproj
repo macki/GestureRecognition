@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataProvider\DataProvider.cs" />
+    <Compile Include="DataProvider\DataProvider.Records.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="IDataContext.cs" />
     <Compile Include="Models\Records.cs" />
