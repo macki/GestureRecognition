@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{48248497-A546-42E0-9133-EB2D9A0B492F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GestureRecognition.Data</RootNamespace>
-    <AssemblyName>GestureRecognition.Data</AssemblyName>
+    <RootNamespace>GestureRecognition.UnistrokeRecognizer</RootNamespace>
+    <AssemblyName>GestureRecognition.UnistrokeRecognizer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,14 +30,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -45,20 +44,34 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WobbrockLib">
+      <HintPath>..\..\UnistrokeRecognizer\DollarMultiTouch\$1\bin\Debug\WobbrockLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider\DataProvider.cs" />
-    <Compile Include="DataProvider\DataProvider.Records.cs" />
-    <Compile Include="Entities.cs" />
-    <Compile Include="IDataContext.cs" />
-    <Compile Include="Models\Gestures.cs" />
-    <Compile Include="Models\Points.cs" />
-    <Compile Include="Models\Records.cs" />
+    <Compile Include="Algorithms\BasicUnistrokeRecognizer.cs" />
+    <Compile Include="Forms\AlgorithmsStepForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AlgorithmsStepForm.Designer.cs">
+      <DependentUpon>AlgorithmsStepForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\Enums.cs" />
+    <Compile Include="Logic\MathHelper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="UnistrokeRecognizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\GestureRecognition.Data\GestureRecognition.Data.csproj">
+      <Project>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</Project>
+      <Name>GestureRecognition.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\AlgorithmsStepForm.resx">
+      <DependentUpon>AlgorithmsStepForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,16 +10,27 @@ using MackiTools.MackiTools;
 using MackiTools.MackiTools.DataGridViewUtil;
 using AForge.Video.DirectShow;
 using AForge.Video;
+using System.Diagnostics;
+using GestureRecognition.Data.Models;
+using GestureRecognition.Forms;
+using GestureRecognition.Logic;
 
 namespace GestureRecognition
 {
     public partial class MainForm : Form
     {
+        private Timer _videoSourceTime = new Timer();
+        private int _videoTimeInSec = 0;
+        private Records _selectedRecord = null;
+        private GesturesForm _gestureForm = null;
+
         public MainForm()
         {
             InitializeComponent();
             InitializeData();
         }
+
+        #region Record GridView 
 
         private void InitializeData()
         {
@@ -29,27 +40,38 @@ namespace GestureRecognition
 
         private void RecordsGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            RecordsGridView.Rows[0].Selected = true;
+            if (RecordsGridView.Rows.Count > 0)
+            { 
+                var row = (DataGridView)sender;
+                RecordsGridView.Rows[0].Selected = true;
+                _selectedRecord = ((List<GestureRecognition.Data.Models.Records>)row.DataSource)[0];
+            }
         }
 
         private void RecirdsGridView_SelectionChanged(object sender, EventArgs e)
         {
-            var row = (DataGridView)sender;
-            var recordModel = ((List<GestureRecognition.Data.Models.Records>)row.DataSource)[0];
+            if (RecordsGridView.Rows.Count > 0)
+            {
+                var row = (DataGridView)sender;
+                if (row.CurrentRow != null)
+                {
+                    _selectedRecord = ((List<GestureRecognition.Data.Models.Records>)row.DataSource)[row.CurrentRow.Index];
+                }
+            }
         }
+
+        #endregion
 
         #region  Player
 
         private void PlayRecord(object sender, EventArgs e)
         {
-            var row = RecordsGridView.SelectedRows[0];
-            var recordModel = ((List<GestureRecognition.Data.Models.Records>)row.DataGridView.DataSource)[0];
 
             VideoCaptureDeviceForm form = new VideoCaptureDeviceForm();
 
             // create video source
-            FileVideoSource fileSource = new FileVideoSource(recordModel.AbsolutePath);
-            this.VideoSource.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler(this.VideoSource_NewFrame);
+            FileVideoSource fileSource = new FileVideoSource(_selectedRecord.AbsolutePath);
+
             // open
             OpenVideoSource(fileSource);
         }
@@ -59,9 +81,14 @@ namespace GestureRecognition
             CloseCurrentVideoSource();
             VideoSource.VideoSource = fileSource;
             VideoSource.Start();
+
+            _videoSourceTime.Start();
+            _videoTimeInSec = 0;
+            _videoSourceTime.Interval = 1000;
+            _videoSourceTime.Tick += new EventHandler(VideoSourceTime_Tick);
         }
 
-        private void VideoSource_NewFrame(object sender, ref Bitmap image)
+        private void VideoSource_NewFrame_1(object sender, ref Bitmap image)
         {
             DateTime now = DateTime.Now;
             Graphics g = Graphics.FromImage(image);
@@ -74,6 +101,19 @@ namespace GestureRecognition
             g.Dispose();
         }
 
+        private void VideoSource_PlayingFinished(object sender, ReasonToFinishPlaying reason)
+        {
+            _videoSourceTime.Stop();
+            _videoSourceTime.Dispose();
+            _videoSourceTime = new Timer();
+        }
+
+        private void VideoSourceTime_Tick(Object myObject,EventArgs myEventArgs)
+        {
+            VideoSourceTime.Text = "Time  " +  _videoTimeInSec.ToString() + " sec";
+            _videoTimeInSec++;
+        }
+
         /// <summary>
         /// Stop currently running video
         /// </summary>
@@ -83,7 +123,13 @@ namespace GestureRecognition
             {
                 VideoSource.SignalToStop();
 
-                System.Threading.Thread.Sleep(3000);
+                // wait ~ 3 seconds
+                for (int i = 0; i < 30; i++)
+                {
+                    if (!VideoSource.IsRunning)
+                        break;
+                    System.Threading.Thread.Sleep(100);
+                }
 
                 if (VideoSource.IsRunning)
                 {
@@ -95,5 +141,88 @@ namespace GestureRecognition
         }
 
         #endregion
+
+        #region Movie [openRecord/Save]
+
+        private void OpenRecord_Click(object sender, EventArgs e)
+        {
+            VideoCaptureDeviceForm form = new VideoCaptureDeviceForm();
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // create video source
+                FileVideoSource fileSource = new FileVideoSource(openFileDialog.FileName);
+                _selectedRecord = new Records { AbsolutePath = openFileDialog.FileName };
+                // open it
+                OpenVideoSource(fileSource);
+            }
+
+            if (RecordsGridView.Rows.Count > 0)
+            {
+                RecordsGridView.CurrentRow.Selected = false;
+            }
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            Program.logger.Debug(_dataProvider.AddNewRecord(_selectedRecord.AbsolutePath, IsRgbCheckBox.Checked));
+            InitializeData();
+        }
+        #endregion
+
+        #region CSV parser
+
+        private void OpenCsvBodyPart_Click(object sender, EventArgs e)
+        {
+            var parser = new CsvParser.CsvParsercs();
+            parser.parseCSV("body_parts.csv");
+            var tt = parser.GetDataSetParsedData("valid09", parser.ParsedData);
+            var ll = parser.GetDataSetVidoeParsedData("devel09", "46");
+        }
+
+        private void GetSkeletonData_Click(object sender, EventArgs e)
+        {
+            var dataSetName = _selectedRecord.GetDataSetName();
+            var videoName = _selectedRecord.GetVideoName();
+
+            var parser = new CsvParser.CsvParsercs();
+            parser.parseCSV("body_parts.csv");
+            var validData = parser.GetDataSetVidoeParsedData(dataSetName, videoName);
+        }
+
+        #endregion
+
+        private void GesturesRecord_Click(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Record);
+            _gestureForm.Show();
+        }
+
+        private void GesturesLoad_Click(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Load);
+            _gestureForm.Show();
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Gestures (*.xml)|*.xml";
+            dlg.Title = "Load Gestures";
+            dlg.Multiselect = true;
+            dlg.RestoreDirectory = false;
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                for (int i = 0; i < dlg.FileNames.Length; i++)
+                {
+                    string name = dlg.FileNames[i];
+                    _gestureForm.LoadGesture(name);
+                }
+            }
+        }
+
+        private void GestureRecognize_Click(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Recognize);
+            _gestureForm.Show();
+        }
     }
 }
