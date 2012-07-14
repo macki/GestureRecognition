@@ -12,13 +12,13 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
 {
     public class BasicUnistrokeRecognizer
     {
-        private List<Gestures> _knonwGestures;
-        private Gestures _gestureToRecognize;
+        protected List<Gestures> _knonwGestures;
+        protected Gestures _gestureToRecognize;
 
-        private const int _sizeOfResample = 64;
-        private double _angle = 45;
-        private double _anglePrecision = 2;
-        private double _goldenRation = 0.5 * (-1 + Math.Sqrt(5.0));
+        protected int _sizeOfResample = 64;
+        protected double _angle = 45;
+        protected double _anglePrecision = 2;
+        protected double _goldenRation = 0.5 * (-1 + Math.Sqrt(5.0));
 
         public BasicUnistrokeRecognizer()
         {
@@ -35,7 +35,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
         /// <summary>
         /// Starting algorithm
         /// </summary>
-        private void Start()
+        protected virtual void Start()
         {
             var resampledPoints = ResamplePoints(_gestureToRecognize.Points, _sizeOfResample);
             var centroidPoint = MathHelper.CalculateCentroid(resampledPoints);
@@ -57,7 +57,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
         /// <param name="points"></param>
         /// <param name="sampleSize"></param>
         /// <returns></returns>
-        private List<Points> ResamplePoints(List<Points> points, int sampleSize)
+        protected List<Points> ResamplePoints(List<Points> points, int sampleSize)
         {
             double Interval = MathHelper.CalculatePathLength(points) / (sampleSize);
 
@@ -91,7 +91,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
         /// </summary>
         /// <param name="pointsAfterStep_One"></param>
         /// <returns></returns>
-        private double RotateToZero(List<Points> pointsAfterStep_One)
+        protected double RotateToZero(List<Points> pointsAfterStep_One)
         {
             var centroidPoint = MathHelper.CalculateCentroid(pointsAfterStep_One);
             var theta = Math.Atan2(centroidPoint.Y - pointsAfterStep_One[0].Y, centroidPoint.X - pointsAfterStep_One[0].X);
@@ -103,7 +103,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
         /// <param name="pointsAfterStep_One"></param>
         /// <param name="theta"></param>
         /// <returns></returns>
-        private List<Points> RotateBy(List<Points> pointsAfterStep_One, double theta)
+        protected List<Points> RotateBy(List<Points> pointsAfterStep_One, double theta)
         {
             // optimaze
             var centroid = MathHelper.CalculateCentroid(pointsAfterStep_One);
@@ -122,7 +122,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
             }
             return newPoints;
         }
-        private List<Points> ScaleTo(List<Points> rotatedPoints, int boundingSize)
+        protected List<Points> ScaleTo(List<Points> rotatedPoints, int boundingSize)
         {
             var boundingBox = MathHelper.CalculateBoundingBox(rotatedPoints);
 
@@ -143,7 +143,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
         /// <param name="scaledPoints"></param>
         /// <param name="originPoint"></param>
         /// <returns></returns>
-        private List<Points> TranslateTo(List<Points> scaledPoints, Points originPoint)
+        protected List<Points> TranslateTo(List<Points> scaledPoints, Points originPoint)
         {
             var centroidPoint = MathHelper.CalculateCentroid(scaledPoints);
             var newPoints = new List<Points>();
@@ -168,7 +168,7 @@ namespace GestureRecognition.UnistrokeRecognizer.Algorithms
         /// <param name="translatedPoints"></param>
         /// <param name="boundingSize"></param>
         /// <returns></returns>
-        private double RecognizeT(List<Points> translatedPoints, double boundingSize)
+        protected virtual double RecognizeT(List<Points> translatedPoints, double boundingSize)
         {
             double accB = double.MaxValue;
             int loopCounter = 0;

@@ -25,6 +25,7 @@ namespace GestureRecognition.Forms
         private bool _isDrawing = false;
         private int _mininumPointsValue = 30;
         private Enums.GestureFormOption _gestureOption = 0;
+        private GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode _recognizeMethods;
         private long _tickingCounterStart = 0;
         private long _tickingCounter = 0;
         private Points _previousPoint = null;
@@ -38,12 +39,13 @@ namespace GestureRecognition.Forms
             InitializeComponent();
         }
 
-        public GesturesForm(GesturesForm gesturesForm, Enums.GestureFormOption option)
+        public GesturesForm(GesturesForm gesturesForm, Enums.GestureFormOption option, GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode recognizeMethod)
         {
             InitializeComponent();
 
             this._gesturesForm = gesturesForm;
             this._gestureOption = option;
+            this._recognizeMethods = recognizeMethod;
 
             switch (option)
             {
@@ -289,7 +291,7 @@ namespace GestureRecognition.Forms
             else
             {
                 var recgonizer = new UnistrokeRecognizer.UnistrokeRecognizer();
-                var gesture =  recgonizer.Recognize(_newGesture.Points, _knownGestures, UnistrokeRecognizer.Logic.Enums.UnistrokeRecognizeMode.basic);
+                var gesture =  recgonizer.Recognize(_newGesture.Points, _knownGestures, _recognizeMethods);
                 GestureInfo.Text = gesture.Name;
             }
 

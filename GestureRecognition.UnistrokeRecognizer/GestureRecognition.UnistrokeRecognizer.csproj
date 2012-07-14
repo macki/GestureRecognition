@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\BasicUnistrokeRecognizer.cs" />
+    <Compile Include="Algorithms\PotractorRecognizer.cs" />
     <Compile Include="Forms\AlgorithmsStepForm.cs">
       <SubType>Form</SubType>
     </Compile>

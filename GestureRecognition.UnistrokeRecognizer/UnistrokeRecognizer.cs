@@ -10,11 +10,11 @@ namespace GestureRecognition.UnistrokeRecognizer
 {
     public class UnistrokeRecognizer
     {
-        public Gestures Recognize(List<Points> pointsToRecognize, List<Gestures> knownGestures, Enums.UnistrokeRecognizeMode mode)
+        public Gestures Recognize(List<Points> pointsToRecognize, List<Gestures> knownGestures, Enums.RecognizeMode mode)
         {
             switch (mode)
             {
-                case Enums.UnistrokeRecognizeMode.basic:
+                case Enums.RecognizeMode.Unistroke_DollarOne:
                     {
                         var recognizerKnowGesture = new  BasicUnistrokeRecognizer();
                         var transformGesturem = new List<Gestures>();
@@ -28,9 +28,10 @@ namespace GestureRecognition.UnistrokeRecognizer
                         var recognizer = new BasicUnistrokeRecognizer(pointsToRecognize, transformGesturem);
                         return recognizer.Result();
                     }break;
-                case Enums.UnistrokeRecognizeMode.complex:
+                case Enums.RecognizeMode.Unistroke_Protractor:
                     {
-                    
+                        var recognizer = new PotractorRecognizer(pointsToRecognize, knownGestures);
+                        return recognizer.Result();
                     }break;
             }
             return null;

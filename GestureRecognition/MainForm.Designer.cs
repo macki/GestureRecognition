@@ -31,9 +31,9 @@ namespace GestureRecognition
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.VideoPanel = new System.Windows.Forms.Panel();
             this.IsRgbCheckBox = new System.Windows.Forms.CheckBox();
             this.SaveButton = new System.Windows.Forms.Button();
@@ -48,9 +48,11 @@ namespace GestureRecognition
             this.gesturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recognizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unistrokeRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.GetCsvData_button = new System.Windows.Forms.Button();
+            this.unistrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VideoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecordsGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -121,33 +123,33 @@ namespace GestureRecognition
             // 
             // RecordsGridView
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.RecordsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.RecordsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.RecordsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.RecordsGridView.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.RecordsGridView.DefaultCellStyle = dataGridViewCellStyle2;
             this.RecordsGridView.Location = new System.Drawing.Point(12, 418);
             this.RecordsGridView.Name = "RecordsGridView";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.RecordsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.RecordsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.RecordsGridView.Size = new System.Drawing.Size(788, 182);
             this.RecordsGridView.TabIndex = 1;
             this.RecordsGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.RecordsGridView_DataBindingComplete);
@@ -157,7 +159,8 @@ namespace GestureRecognition
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.gesturesToolStripMenuItem});
+            this.gesturesToolStripMenuItem,
+            this.recognizeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(969, 24);
@@ -191,8 +194,7 @@ namespace GestureRecognition
             // 
             this.gesturesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.recordToolStripMenuItem,
-            this.loadToolStripMenuItem,
-            this.viewToolStripMenuItem});
+            this.loadToolStripMenuItem});
             this.gesturesToolStripMenuItem.Name = "gesturesToolStripMenuItem";
             this.gesturesToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.gesturesToolStripMenuItem.Text = "Gestures";
@@ -200,23 +202,32 @@ namespace GestureRecognition
             // recordToolStripMenuItem
             // 
             this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
-            this.recordToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.recordToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.recordToolStripMenuItem.Text = "Record";
             this.recordToolStripMenuItem.Click += new System.EventHandler(this.GesturesRecord_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.GesturesLoad_Click);
             // 
-            // viewToolStripMenuItem
+            // recognizeToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.viewToolStripMenuItem.Text = "Recognize";
-            this.viewToolStripMenuItem.Click += new System.EventHandler(this.GestureRecognize_Click);
+            this.recognizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.unistrokeRecognizerToolStripMenuItem,
+            this.unistrokeProtractorRecognizerToolStripMenuItem});
+            this.recognizeToolStripMenuItem.Name = "recognizeToolStripMenuItem";
+            this.recognizeToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
+            this.recognizeToolStripMenuItem.Text = "Recognize";
+            // 
+            // unistrokeRecognizerToolStripMenuItem
+            // 
+            this.unistrokeRecognizerToolStripMenuItem.Name = "unistrokeRecognizerToolStripMenuItem";
+            this.unistrokeRecognizerToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.unistrokeRecognizerToolStripMenuItem.Text = "Unistroke Recognizer";
+            this.unistrokeRecognizerToolStripMenuItem.Click += new System.EventHandler(this.UnistrokeRecognizer_Click);
             // 
             // openFileDialog
             // 
@@ -231,6 +242,13 @@ namespace GestureRecognition
             this.GetCsvData_button.Text = "Get Skeleton Data";
             this.GetCsvData_button.UseVisualStyleBackColor = true;
             this.GetCsvData_button.Click += new System.EventHandler(this.GetSkeletonData_Click);
+            // 
+            // unistrokeProtractorRecognizerToolStripMenuItem
+            // 
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Name = "unistrokeProtractorRecognizerToolStripMenuItem";
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Text = "Unistroke Protractor Recognizer";
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Click += new System.EventHandler(this.UnistrokeProtractor_Recognizer);
             // 
             // MainForm
             // 
@@ -272,7 +290,9 @@ namespace GestureRecognition
         private System.Windows.Forms.ToolStripMenuItem gesturesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recognizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unistrokeRecognizerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unistrokeProtractorRecognizerToolStripMenuItem;
 
     }
 }

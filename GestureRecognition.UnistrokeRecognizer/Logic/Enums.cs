@@ -7,10 +7,11 @@ namespace GestureRecognition.UnistrokeRecognizer.Logic
 {
     public class Enums
     {
-        public enum UnistrokeRecognizeMode
+        public enum RecognizeMode
         {
-            basic = 0,
-            complex
+            Unistroke_DollarOne = 0,
+            Unistroke_Protractor = 1,
+            MultiStroke = 2
         } 
     }
 }

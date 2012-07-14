@@ -194,13 +194,13 @@ namespace GestureRecognition
 
         private void GesturesRecord_Click(object sender, EventArgs e)
         {
-            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Record);
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Record, 0);
             _gestureForm.Show();
         }
 
         private void GesturesLoad_Click(object sender, EventArgs e)
         {
-            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Load);
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Load, 0);
             _gestureForm.Show();
 
             OpenFileDialog dlg = new OpenFileDialog();
@@ -219,9 +219,19 @@ namespace GestureRecognition
             }
         }
 
-        private void GestureRecognize_Click(object sender, EventArgs e)
+        private void UnistrokeRecognizer_Click(object sender, EventArgs e)
         {
-            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.Recognize);
+            _gestureForm = new GesturesForm(this._gestureForm,
+                                            Enums.GestureFormOption.Recognize,
+                                            GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode.Unistroke_DollarOne);
+            _gestureForm.Show();
+        }
+
+        private void UnistrokeProtractor_Recognizer(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm,
+                                            Enums.GestureFormOption.Recognize,
+                                            GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode.Unistroke_Protractor);
             _gestureForm.Show();
         }
     }

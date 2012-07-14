@@ -19,6 +19,7 @@ namespace GestureRecognition.Data.Models
 
         public Gestures(string name, List<Points> points)
         {
+            Name = name;
             Points = points;
         }
     }
