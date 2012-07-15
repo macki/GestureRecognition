@@ -35,6 +35,7 @@ namespace GestureRecognition
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.VideoPanel = new System.Windows.Forms.Panel();
+            this.PauseButton = new System.Windows.Forms.Button();
             this.IsRgbCheckBox = new System.Windows.Forms.CheckBox();
             this.SaveButton = new System.Windows.Forms.Button();
             this.VideoSourceTime = new System.Windows.Forms.Label();
@@ -44,15 +45,17 @@ namespace GestureRecognition
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openCsvBodyPartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gesturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildSkeletonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recognizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unistrokeRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unistrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.multstrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.GetCsvData_button = new System.Windows.Forms.Button();
-            this.unistrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VideoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecordsGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -60,6 +63,7 @@ namespace GestureRecognition
             // 
             // VideoPanel
             // 
+            this.VideoPanel.Controls.Add(this.PauseButton);
             this.VideoPanel.Controls.Add(this.IsRgbCheckBox);
             this.VideoPanel.Controls.Add(this.SaveButton);
             this.VideoPanel.Controls.Add(this.VideoSourceTime);
@@ -69,6 +73,16 @@ namespace GestureRecognition
             this.VideoPanel.Name = "VideoPanel";
             this.VideoPanel.Size = new System.Drawing.Size(427, 389);
             this.VideoPanel.TabIndex = 0;
+            // 
+            // PauseButton
+            // 
+            this.PauseButton.Location = new System.Drawing.Point(335, 352);
+            this.PauseButton.Name = "PauseButton";
+            this.PauseButton.Size = new System.Drawing.Size(75, 23);
+            this.PauseButton.TabIndex = 5;
+            this.PauseButton.Text = "Pause";
+            this.PauseButton.UseVisualStyleBackColor = true;
+            this.PauseButton.Click += new System.EventHandler(this.PauseButton_Click);
             // 
             // IsRgbCheckBox
             // 
@@ -170,8 +184,7 @@ namespace GestureRecognition
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openRecordToolStripMenuItem,
-            this.openCsvBodyPartToolStripMenuItem});
+            this.openRecordToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -179,45 +192,55 @@ namespace GestureRecognition
             // openRecordToolStripMenuItem
             // 
             this.openRecordToolStripMenuItem.Name = "openRecordToolStripMenuItem";
-            this.openRecordToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.openRecordToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.openRecordToolStripMenuItem.Text = "Open Record";
             this.openRecordToolStripMenuItem.Click += new System.EventHandler(this.OpenRecord_Click);
-            // 
-            // openCsvBodyPartToolStripMenuItem
-            // 
-            this.openCsvBodyPartToolStripMenuItem.Name = "openCsvBodyPartToolStripMenuItem";
-            this.openCsvBodyPartToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.openCsvBodyPartToolStripMenuItem.Text = "Open Csv Body Part";
-            this.openCsvBodyPartToolStripMenuItem.Click += new System.EventHandler(this.OpenCsvBodyPart_Click);
             // 
             // gesturesToolStripMenuItem
             // 
             this.gesturesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadToolStripMenuItem,
             this.recordToolStripMenuItem,
-            this.loadToolStripMenuItem});
+            this.buildSkeletonToolStripMenuItem,
+            this.clearMemoryToolStripMenuItem});
             this.gesturesToolStripMenuItem.Name = "gesturesToolStripMenuItem";
             this.gesturesToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.gesturesToolStripMenuItem.Text = "Gestures";
             // 
-            // recordToolStripMenuItem
-            // 
-            this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
-            this.recordToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.recordToolStripMenuItem.Text = "Record";
-            this.recordToolStripMenuItem.Click += new System.EventHandler(this.GesturesRecord_Click);
-            // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.GesturesLoad_Click);
+            // 
+            // recordToolStripMenuItem
+            // 
+            this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
+            this.recordToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.recordToolStripMenuItem.Text = "Record";
+            this.recordToolStripMenuItem.Click += new System.EventHandler(this.GesturesRecord_Click);
+            // 
+            // buildSkeletonToolStripMenuItem
+            // 
+            this.buildSkeletonToolStripMenuItem.Name = "buildSkeletonToolStripMenuItem";
+            this.buildSkeletonToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.buildSkeletonToolStripMenuItem.Text = "Build Skeleton";
+            this.buildSkeletonToolStripMenuItem.Click += new System.EventHandler(this.BuildSkeleton_Click);
+            // 
+            // clearMemoryToolStripMenuItem
+            // 
+            this.clearMemoryToolStripMenuItem.Name = "clearMemoryToolStripMenuItem";
+            this.clearMemoryToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.clearMemoryToolStripMenuItem.Text = "Clear Memory";
+            this.clearMemoryToolStripMenuItem.Click += new System.EventHandler(this.ClearMemory_Click);
             // 
             // recognizeToolStripMenuItem
             // 
             this.recognizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.unistrokeRecognizerToolStripMenuItem,
-            this.unistrokeProtractorRecognizerToolStripMenuItem});
+            this.unistrokeProtractorRecognizerToolStripMenuItem,
+            this.multstrokeProtractorRecognizerToolStripMenuItem});
             this.recognizeToolStripMenuItem.Name = "recognizeToolStripMenuItem";
             this.recognizeToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.recognizeToolStripMenuItem.Text = "Recognize";
@@ -225,9 +248,23 @@ namespace GestureRecognition
             // unistrokeRecognizerToolStripMenuItem
             // 
             this.unistrokeRecognizerToolStripMenuItem.Name = "unistrokeRecognizerToolStripMenuItem";
-            this.unistrokeRecognizerToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.unistrokeRecognizerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.unistrokeRecognizerToolStripMenuItem.Text = "Unistroke Recognizer";
             this.unistrokeRecognizerToolStripMenuItem.Click += new System.EventHandler(this.UnistrokeRecognizer_Click);
+            // 
+            // unistrokeProtractorRecognizerToolStripMenuItem
+            // 
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Name = "unistrokeProtractorRecognizerToolStripMenuItem";
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Text = "Unistroke Protractor Recognizer";
+            this.unistrokeProtractorRecognizerToolStripMenuItem.Click += new System.EventHandler(this.UnistrokeProtractor_Recognizer);
+            // 
+            // multstrokeProtractorRecognizerToolStripMenuItem
+            // 
+            this.multstrokeProtractorRecognizerToolStripMenuItem.Name = "multstrokeProtractorRecognizerToolStripMenuItem";
+            this.multstrokeProtractorRecognizerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.multstrokeProtractorRecognizerToolStripMenuItem.Text = "Multstroke Protractor Recognizer";
+            this.multstrokeProtractorRecognizerToolStripMenuItem.Click += new System.EventHandler(this.MultistrokeProtractorRecognizer_Click);
             // 
             // openFileDialog
             // 
@@ -242,13 +279,6 @@ namespace GestureRecognition
             this.GetCsvData_button.Text = "Get Skeleton Data";
             this.GetCsvData_button.UseVisualStyleBackColor = true;
             this.GetCsvData_button.Click += new System.EventHandler(this.GetSkeletonData_Click);
-            // 
-            // unistrokeProtractorRecognizerToolStripMenuItem
-            // 
-            this.unistrokeProtractorRecognizerToolStripMenuItem.Name = "unistrokeProtractorRecognizerToolStripMenuItem";
-            this.unistrokeProtractorRecognizerToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.unistrokeProtractorRecognizerToolStripMenuItem.Text = "Unistroke Protractor Recognizer";
-            this.unistrokeProtractorRecognizerToolStripMenuItem.Click += new System.EventHandler(this.UnistrokeProtractor_Recognizer);
             // 
             // MainForm
             // 
@@ -285,7 +315,6 @@ namespace GestureRecognition
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.CheckBox IsRgbCheckBox;
-        private System.Windows.Forms.ToolStripMenuItem openCsvBodyPartToolStripMenuItem;
         private System.Windows.Forms.Button GetCsvData_button;
         private System.Windows.Forms.ToolStripMenuItem gesturesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recordToolStripMenuItem;
@@ -293,6 +322,10 @@ namespace GestureRecognition
         private System.Windows.Forms.ToolStripMenuItem recognizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unistrokeRecognizerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unistrokeProtractorRecognizerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem multstrokeProtractorRecognizerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildSkeletonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearMemoryToolStripMenuItem;
+        private System.Windows.Forms.Button PauseButton;
 
     }
 }

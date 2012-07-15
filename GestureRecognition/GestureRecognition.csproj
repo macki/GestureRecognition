@@ -122,6 +122,10 @@
       <Project>{48248497-A546-42E0-9133-EB2D9A0B492F}</Project>
       <Name>GestureRecognition.UnistrokeRecognizer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GestureRecognition.VideoDataAnalyser\GestureRecognition.VideoDataAnalyser.csproj">
+      <Project>{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}</Project>
+      <Name>GestureRecognition.VideoDataAnalyser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MackiTools\MackiTools.csproj">
       <Project>{4B8090B6-4936-4DD9-8178-EAB547C98B73}</Project>
       <Name>MackiTools</Name>

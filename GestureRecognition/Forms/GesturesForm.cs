@@ -46,6 +46,8 @@ namespace GestureRecognition.Forms
             this._gesturesForm = gesturesForm;
             this._gestureOption = option;
             this._recognizeMethods = recognizeMethod;
+            
+            BuildSkeletonSave.Visible = false;
 
             switch (option)
             {
@@ -115,6 +117,18 @@ namespace GestureRecognition.Forms
 
                 Invalidate();
             }
+            else if (_gestureOption == Enums.GestureFormOption.RecordSkeletonBuild)
+            {
+                BuildSkeletonSave.Text = "Save Skeleton";
+                BuildSkeletonSave.Visible = true;
+                _isDrawing = true;
+            }
+            else if (_gestureOption == Enums.GestureFormOption.RecognizeMultiStroke)
+            {
+                BuildSkeletonSave.Text = "Recognize Skeleton";
+                BuildSkeletonSave.Visible = true;
+                _isDrawing = true;
+            }
         }
         private void GesturesForm_MouseMove(object sender, MouseEventArgs e)
         {
@@ -140,37 +154,66 @@ namespace GestureRecognition.Forms
             if (_isDrawing)
             {
                 _isDrawing = false;
-
-                if (_newGesture.Points.Count > _mininumPointsValue)
-                {
-                    if (_gestureOption == Enums.GestureFormOption.Record)
+                    if (_newGesture.Points.Count > _mininumPointsValue)
                     {
-                        SaveFileDialog saveDialog = new SaveFileDialog();
-                        saveDialog.Filter = "Gestures (*.xml)|*.xml";
-                        saveDialog.Title = "Save Gesture As";
-                        saveDialog.AddExtension = true;
-                        saveDialog.RestoreDirectory = false;
-
-                        if (saveDialog.ShowDialog(this) == DialogResult.OK)
+                        if (_gestureOption == Enums.GestureFormOption.Record)
                         {
-                            SaveGesture(saveDialog.FileName, _newGesture.Points);
+                            SaveFileDialog saveDialog = new SaveFileDialog();
+                            saveDialog.Filter = "Gestures (*.xml)|*.xml";
+                            saveDialog.Title = "Save Gesture As";
+                            saveDialog.AddExtension = true;
+                            saveDialog.RestoreDirectory = false;
+
+                            if (saveDialog.ShowDialog(this) == DialogResult.OK)
+                            {
+                                SaveGesture(saveDialog.FileName, _newGesture.Points);
+                            }
+
+                            saveDialog.Dispose();
+                            _gestureOption = Enums.GestureFormOption.None;
+                            BuildSkeletonSave.Visible = false ;
+                            Invalidate();
                         }
-
-                        saveDialog.Dispose();
-                        _gestureOption = Enums.GestureFormOption.None;
-                        Invalidate();
-                    }
-                    else if (_gestureOption == Enums.GestureFormOption.Recognize)
+                        else if (_gestureOption == Enums.GestureFormOption.Recognize)
+                        {
+                            Recognize();
+                        }
+                    else
                     {
-                        Recognize();
+                        GestureInfo.Text = "You need more points to draw a gesture (min " + _mininumPointsValue + ")";
                     }
                 }
-                else
+            }
+        }
+
+        private void SaveSkeleton_Click(object sender, EventArgs e)
+        {
+            _isDrawing = false;
+
+            if (_gestureOption == Enums.GestureFormOption.RecordSkeletonBuild)
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Filter = "Gestures (*.xml)|*.xml";
+                saveDialog.Title = "Save Gesture As";
+                saveDialog.AddExtension = true;
+                saveDialog.RestoreDirectory = false;
+
+                if (saveDialog.ShowDialog(this) == DialogResult.OK)
                 {
-                    GestureInfo.Text = "You need more points to draw a gesture (min " + _mininumPointsValue + ")";
+                    SaveGesture(saveDialog.FileName, _newGesture.Points);
                 }
 
+                saveDialog.Dispose();
+                _gestureOption = Enums.GestureFormOption.None;
+                Invalidate();
             }
+            else if (_gestureOption == Enums.GestureFormOption.RecognizeMultiStroke)
+            {
+                Recognize();
+            }
+
+            Invalidate();
+            _newGesture.Points.Clear();
         }
 
         #endregion
@@ -189,7 +232,8 @@ namespace GestureRecognition.Forms
                 reader.WhitespaceHandling = WhitespaceHandling.None;
                 reader.MoveToContent();
 
-                _knownGestures.Add(new Gestures(filename, ReadGesture(reader)));
+                var splittedFileName = filename.Split('\\');
+                _knownGestures.Add(new Gestures(splittedFileName[splittedFileName.Length - 1], ReadGesture(reader)));
                 DrawPoints();
             }
             catch (XmlException xex)
@@ -282,6 +326,12 @@ namespace GestureRecognition.Forms
 
         #endregion
 
+        public static void ClearGestures()
+        {
+            _knownGestures.Clear();
+            _knownGestures = new List<Gestures>();        
+        }
+
         private void Recognize()
         {
             if (!_knownGestures.Any())
@@ -310,6 +360,8 @@ namespace GestureRecognition.Forms
         }
 
         #endregion
+
+
 
     }
 }

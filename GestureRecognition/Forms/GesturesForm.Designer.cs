@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.GestureInfo = new System.Windows.Forms.Label();
+            this.BuildSkeletonSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GestureInfo
@@ -43,12 +44,23 @@
             this.GestureInfo.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.GestureInfo.UseCompatibleTextRendering = true;
             // 
+            // BuildSkeletonSave
+            // 
+            this.BuildSkeletonSave.Location = new System.Drawing.Point(485, 406);
+            this.BuildSkeletonSave.Name = "BuildSkeletonSave";
+            this.BuildSkeletonSave.Size = new System.Drawing.Size(75, 23);
+            this.BuildSkeletonSave.TabIndex = 1;
+            this.BuildSkeletonSave.Text = "Save Skeleton";
+            this.BuildSkeletonSave.UseVisualStyleBackColor = true;
+            this.BuildSkeletonSave.Click += new System.EventHandler(this.SaveSkeleton_Click);
+            // 
             // GesturesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(562, 431);
+            this.Controls.Add(this.BuildSkeletonSave);
             this.Controls.Add(this.GestureInfo);
             this.Name = "GesturesForm";
             this.Text = "GesturesForm";
@@ -65,5 +77,6 @@
         #endregion
 
         private System.Windows.Forms.Label GestureInfo;
+        private System.Windows.Forms.Button BuildSkeletonSave;
     }
 }

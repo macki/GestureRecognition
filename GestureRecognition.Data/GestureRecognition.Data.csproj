@@ -54,6 +54,7 @@
     <Compile Include="Models\Gestures.cs" />
     <Compile Include="Models\Points.cs" />
     <Compile Include="Models\Records.cs" />
+    <Compile Include="Models\VideoFrames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

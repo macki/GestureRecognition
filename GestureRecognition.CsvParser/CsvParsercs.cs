@@ -77,5 +77,23 @@ namespace GestureRecognition.CsvParser
             videoData = GetVidoeParsedData(videoName, videoData);
             return videoData;
         }
+
+        public string[] GetFirstRow(string dataSetName, string videoName)
+        {
+            if (dataSetName.Contains("devel"))
+            {
+                int num = int.Parse(dataSetName.Substring(5, dataSetName.Length - 5));
+
+                foreach (var item in _parsedData)
+                {
+                    if (item[1] == num.ToString() && item[0] == "devel")
+                    {
+                        return item;
+                    }
+                }
+
+            }
+            return null;
+        }
     }
 }

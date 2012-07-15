@@ -10,8 +10,10 @@ namespace GestureRecognition.Logic
         public enum GestureFormOption
         {
             Record = 0,
-            Load = 1,
+            RecordSkeletonBuild = 1,
             Recognize = 2,
+            RecognizeMultiStroke = 3,
+            Load = 4,
             None
         }
     }

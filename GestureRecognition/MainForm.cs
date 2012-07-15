@@ -14,6 +14,7 @@ using System.Diagnostics;
 using GestureRecognition.Data.Models;
 using GestureRecognition.Forms;
 using GestureRecognition.Logic;
+using GestureRecognition.VideoDataAnalyser;
 
 namespace GestureRecognition
 {
@@ -22,7 +23,9 @@ namespace GestureRecognition
         private Timer _videoSourceTime = new Timer();
         private int _videoTimeInSec = 0;
         private Records _selectedRecord = null;
+        private Records _recordToSave = null;
         private GesturesForm _gestureForm = null;
+        private DataAnalyser _videDataAnalyser = null;
 
         public MainForm()
         {
@@ -69,6 +72,9 @@ namespace GestureRecognition
 
             VideoCaptureDeviceForm form = new VideoCaptureDeviceForm();
 
+            // create new instance of video data analyser
+            _videDataAnalyser = new DataAnalyser(_selectedRecord);
+
             // create video source
             FileVideoSource fileSource = new FileVideoSource(_selectedRecord.AbsolutePath);
 
@@ -92,6 +98,8 @@ namespace GestureRecognition
         {
             DateTime now = DateTime.Now;
             Graphics g = Graphics.FromImage(image);
+
+            _videDataAnalyser.AddFrame(image);
 
             // paint current time
             SolidBrush brush = new SolidBrush(Color.Red);
@@ -152,7 +160,7 @@ namespace GestureRecognition
             {
                 // create video source
                 FileVideoSource fileSource = new FileVideoSource(openFileDialog.FileName);
-                _selectedRecord = new Records { AbsolutePath = openFileDialog.FileName };
+                _recordToSave = new Records { AbsolutePath = openFileDialog.FileName };
                 // open it
                 OpenVideoSource(fileSource);
             }
@@ -165,20 +173,15 @@ namespace GestureRecognition
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            Program.logger.Debug(_dataProvider.AddNewRecord(_selectedRecord.AbsolutePath, IsRgbCheckBox.Checked));
-            InitializeData();
+            if (_recordToSave != null)
+            {
+                Program.logger.Debug(_dataProvider.AddNewRecord(_recordToSave.AbsolutePath, IsRgbCheckBox.Checked));
+                InitializeData();
+            }
         }
         #endregion
 
         #region CSV parser
-
-        private void OpenCsvBodyPart_Click(object sender, EventArgs e)
-        {
-            var parser = new CsvParser.CsvParsercs();
-            parser.parseCSV("body_parts.csv");
-            var tt = parser.GetDataSetParsedData("valid09", parser.ParsedData);
-            var ll = parser.GetDataSetVidoeParsedData("devel09", "46");
-        }
 
         private void GetSkeletonData_Click(object sender, EventArgs e)
         {
@@ -234,5 +237,38 @@ namespace GestureRecognition
                                             GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode.Unistroke_Protractor);
             _gestureForm.Show();
         }
+
+        private void MultistrokeProtractorRecognizer_Click(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm,
+                                Enums.GestureFormOption.RecognizeMultiStroke,
+                                GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode.Unistroke_Protractor);
+            _gestureForm.Show();
+        }
+
+        private void BuildSkeleton_Click(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.RecordSkeletonBuild, 0);
+            _gestureForm.Show();
+        }
+
+        private void ClearMemory_Click(object sender, EventArgs e)
+        {
+            GesturesForm.ClearGestures();
+        }
+
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            if (VideoSource.IsRunning)
+            {
+               
+            }
+            else
+            {
+                VideoSource.Start();
+            }
+          
+        }
+
     }
 }
