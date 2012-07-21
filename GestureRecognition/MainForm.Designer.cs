@@ -56,6 +56,7 @@ namespace GestureRecognition
             this.multstrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.GetCsvData_button = new System.Windows.Forms.Button();
+            this.squarePatternRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VideoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecordsGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -240,7 +241,8 @@ namespace GestureRecognition
             this.recognizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.unistrokeRecognizerToolStripMenuItem,
             this.unistrokeProtractorRecognizerToolStripMenuItem,
-            this.multstrokeProtractorRecognizerToolStripMenuItem});
+            this.multstrokeProtractorRecognizerToolStripMenuItem,
+            this.squarePatternRecognizerToolStripMenuItem});
             this.recognizeToolStripMenuItem.Name = "recognizeToolStripMenuItem";
             this.recognizeToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.recognizeToolStripMenuItem.Text = "Recognize";
@@ -279,6 +281,13 @@ namespace GestureRecognition
             this.GetCsvData_button.Text = "Get Skeleton Data";
             this.GetCsvData_button.UseVisualStyleBackColor = true;
             this.GetCsvData_button.Click += new System.EventHandler(this.GetSkeletonData_Click);
+            // 
+            // squarePatternRecognizerToolStripMenuItem
+            // 
+            this.squarePatternRecognizerToolStripMenuItem.Name = "squarePatternRecognizerToolStripMenuItem";
+            this.squarePatternRecognizerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.squarePatternRecognizerToolStripMenuItem.Text = "Square Pattern recognizer";
+            this.squarePatternRecognizerToolStripMenuItem.Click += new System.EventHandler(this.squarePatternRecognizerToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -326,6 +335,7 @@ namespace GestureRecognition
         private System.Windows.Forms.ToolStripMenuItem buildSkeletonToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearMemoryToolStripMenuItem;
         private System.Windows.Forms.Button PauseButton;
+        private System.Windows.Forms.ToolStripMenuItem squarePatternRecognizerToolStripMenuItem;
 
     }
 }

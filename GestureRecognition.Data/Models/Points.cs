@@ -11,6 +11,7 @@ namespace GestureRecognition.Data.Models
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
+        public int Color { get; set; }
         public long MSecTime { get; set; }
 
         public virtual Gestures Gesture { get; set; }

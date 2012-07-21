@@ -40,6 +40,22 @@ namespace GestureRecognition.UnistrokeRecognizer.Logic
             }
             return new Points(x / points.Count, y / points.Count, 0 ,0);
         }
+        public static Points CalculateCentroidBody(List<Points> points)
+        {
+            double x = 0;
+            double y = 0;
+            int c = 0;
+            for (int i = 0; i < points.Count; i++)
+            {
+                if ((int)points[i].Z  != 0)
+                {
+                    x += points[i].X;
+                    y += points[i].Y;
+                    c++;
+                }
+            }
+            return new Points(x / c, y / c, 0, 0);
+        }
         public static RectangleD CalculateBoundingBox(List<Points> points)
         {
             double minX = double.MaxValue;
@@ -70,6 +86,23 @@ namespace GestureRecognition.UnistrokeRecognizer.Logic
                 }
             }
             return new RectangleD(minX, minY, maxX - minX, maxY - minY);
+        }
+        public static List<Data.Models.Points> GetPointsFromRectangle(System.Drawing.Rectangle rect)
+        {
+            var rectPoints = new List<Data.Models.Points>();
+
+            for (int j = 0; j < rect.Width; j++)
+            {
+                rectPoints.Add(new Points(rect.X + j, rect.Y, 0, 0));
+                rectPoints.Add(new Points(rect.X + j, rect.Y + rect.Height, 0, 0));
+            }
+
+            for (int j = 0; j < rect.Height; j++)
+            {
+                rectPoints.Add(new Points(rect.X, rect.Y + j, 0, 0));
+                rectPoints.Add(new Points(rect.X + rect.Width, rect.Y + j, 0, 0));
+            }
+            return rectPoints;
         }
     }
 

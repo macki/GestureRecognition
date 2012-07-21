@@ -270,5 +270,11 @@ namespace GestureRecognition
           
         }
 
+        private void squarePatternRecognizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _gestureForm = new GesturesForm(this._gestureForm, Enums.GestureFormOption.SquareRecognizer, 0);
+            _gestureForm.Show();
+        }
+
     }
 }

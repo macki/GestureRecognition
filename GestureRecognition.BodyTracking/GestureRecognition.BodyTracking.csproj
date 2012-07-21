@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</ProjectGuid>
+    <ProjectGuid>{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GestureRecognition.Data</RootNamespace>
-    <AssemblyName>GestureRecognition.Data</AssemblyName>
+    <RootNamespace>GestureRecognition.BodyTracking</RootNamespace>
+    <AssemblyName>GestureRecognition.BodyTracking</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,15 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,20 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider\DataProvider.cs" />
-    <Compile Include="DataProvider\DataProvider.Records.cs" />
-    <Compile Include="Entities.cs" />
-    <Compile Include="IDataContext.cs" />
-    <Compile Include="Models\Gestures.cs" />
-    <Compile Include="Models\Points.cs" />
-    <Compile Include="Models\Records.cs" />
-    <Compile Include="Models\SelectionSquares.cs" />
-    <Compile Include="Models\VideoFrames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackingSystem.cs" />
+    <Compile Include="TrackingSystem.Util.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\GestureRecognition.Data\GestureRecognition.Data.csproj">
+      <Project>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</Project>
+      <Name>GestureRecognition.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestureRecognition.UnistrokeRecognizer\GestureRecognition.UnistrokeRecognizer.csproj">
+      <Project>{48248497-A546-42E0-9133-EB2D9A0B492F}</Project>
+      <Name>GestureRecognition.UnistrokeRecognizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GestureRecognition.Data</RootNamespace>
-    <AssemblyName>GestureRecognition.Data</AssemblyName>
+    <RootNamespace>GestureRecognition.VideoDataAnalyser</RootNamespace>
+    <AssemblyName>GestureRecognition.VideoDataAnalyser</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,14 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -47,20 +45,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider\DataProvider.cs" />
-    <Compile Include="DataProvider\DataProvider.Records.cs" />
-    <Compile Include="Entities.cs" />
-    <Compile Include="IDataContext.cs" />
-    <Compile Include="Models\Gestures.cs" />
-    <Compile Include="Models\Points.cs" />
-    <Compile Include="Models\Records.cs" />
-    <Compile Include="Models\SelectionSquares.cs" />
-    <Compile Include="Models\VideoFrames.cs" />
+    <Compile Include="DataAnalyser.cs" />
+    <Compile Include="Forms\VideoAnalyserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VideoAnalyserForm.Designer.cs">
+      <DependentUpon>VideoAnalyserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\GestureRecognition.BodyTracking\GestureRecognition.BodyTracking.csproj">
+      <Project>{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}</Project>
+      <Name>GestureRecognition.BodyTracking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestureRecognition.CsvParser\GestureRecognition.CsvParser.csproj">
+      <Project>{BB166F24-CA51-4C69-8F8D-4CDA6C626C4B}</Project>
+      <Name>GestureRecognition.CsvParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestureRecognition.Data\GestureRecognition.Data.csproj">
+      <Project>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</Project>
+      <Name>GestureRecognition.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GestureRecognition.UnistrokeRecognizer\GestureRecognition.UnistrokeRecognizer.csproj">
+      <Project>{48248497-A546-42E0-9133-EB2D9A0B492F}</Project>
+      <Name>GestureRecognition.UnistrokeRecognizer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\VideoAnalyserForm.resx">
+      <DependentUpon>VideoAnalyserForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

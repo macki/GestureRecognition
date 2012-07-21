@@ -14,6 +14,7 @@ namespace GestureRecognition.Logic
             Recognize = 2,
             RecognizeMultiStroke = 3,
             Load = 4,
+            SquareRecognizer = 5,
             None
         }
     }

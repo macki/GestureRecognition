@@ -11,6 +11,7 @@ using GestureRecognition.Data.Models;
 using System.Xml;
 using System.Reflection;
 using System.Diagnostics;
+using GestureRecognition.UnistrokeRecognizer.Logic;
 
 namespace GestureRecognition.Forms
 {
@@ -19,16 +20,20 @@ namespace GestureRecognition.Forms
         #region Fields
 
         private static List<Gestures> _knownGestures = new List<Gestures>();
+        private static List<Rectangle> _squares = new List<Rectangle>();
 
         private GesturesForm _gesturesForm;
         private Gestures _newGesture = new Gestures();
         private bool _isDrawing = false;
         private int _mininumPointsValue = 30;
-        private Enums.GestureFormOption _gestureOption = 0;
+        private GestureRecognition.Logic.Enums.GestureFormOption _gestureOption = 0;
         private GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode _recognizeMethods;
         private long _tickingCounterStart = 0;
         private long _tickingCounter = 0;
         private Points _previousPoint = null;
+        private int _selectedSquareIndex = -1;
+        private bool _isMoving = false;
+        private System.Drawing.Graphics graphics;
 
         #endregion
 
@@ -39,31 +44,46 @@ namespace GestureRecognition.Forms
             InitializeComponent();
         }
 
-        public GesturesForm(GesturesForm gesturesForm, Enums.GestureFormOption option, GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode recognizeMethod)
+        public GesturesForm(GesturesForm gesturesForm, GestureRecognition.Logic.Enums.GestureFormOption option, GestureRecognition.UnistrokeRecognizer.Logic.Enums.RecognizeMode recognizeMethod)
         {
             InitializeComponent();
 
             this._gesturesForm = gesturesForm;
             this._gestureOption = option;
             this._recognizeMethods = recognizeMethod;
+            this.SquareButton.Visible = false;
             
             BuildSkeletonSave.Visible = false;
 
+            graphics = this.CreateGraphics();
+
+            this.DoubleBuffered = true;
+
             switch (option)
             {
-                case Enums.GestureFormOption.Record:
+                case GestureRecognition.Logic.Enums.GestureFormOption.Record:
                     {
                         InitRecording();
                     } break;
-                case Enums.GestureFormOption.Load:
+                case GestureRecognition.Logic.Enums.GestureFormOption.Load:
                     {
-                         InitLoading();
+                        InitLoading();
                     } break;
-                case Enums.GestureFormOption.Recognize:
+                case GestureRecognition.Logic.Enums.GestureFormOption.Recognize:
                     {
                         InitRecognizing();
                     } break;
+                case GestureRecognition.Logic.Enums.GestureFormOption.SquareRecognizer:
+                    {
+                        InitSquareRecognizing();
+                    }break;
             }
+        }
+
+        private void InitSquareRecognizing()
+        {
+            SquareButton.Visible = true;
+            GestureInfo.Text = "Use squares to recognize pattern...";
         }
 
         private void InitLoading()
@@ -97,66 +117,119 @@ namespace GestureRecognition.Forms
         {
             if (_newGesture.Points.Count > 0)
             {
-                e.Graphics.FillEllipse((_gestureOption == Enums.GestureFormOption.Record) ? Brushes.Firebrick : Brushes.DarkBlue, (int)_newGesture.Points[0].X - 5f, (int)_newGesture.Points[0].Y - 5f, 10f, 10f);
+                e.Graphics.FillEllipse((_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Record) ? Brushes.Firebrick : Brushes.DarkBlue, (int)_newGesture.Points[0].X - 5f, (int)_newGesture.Points[0].Y - 5f, 10f, 10f);
             }
 
             foreach (Points p in _newGesture.Points)
             {
-                e.Graphics.FillEllipse((_gestureOption == Enums.GestureFormOption.Record) ? Brushes.Firebrick : Brushes.DarkBlue, (int)(p.X) - 2f, (int)(p.Y) - 2f, 4f, 4f);
+                e.Graphics.FillEllipse((_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Record) ? Brushes.Firebrick : Brushes.DarkBlue, (int)(p.X) - 2f, (int)(p.Y) - 2f, 4f, 4f);
             }
+
+             if (_isMoving)
+             {
+                 // drawing squares
+                 foreach (var item in _squares)
+                 {
+                     DrawSquare(item);
+                 }
+             }
         }
 
         private void GesturesForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (_gestureOption == Enums.GestureFormOption.Record || _gestureOption == Enums.GestureFormOption.Recognize)
+            if (_selectedSquareIndex == -1)
             {
-                _isDrawing = true;
-                _newGesture.Points.Clear();
-                _tickingCounter = 0;
-                _tickingCounterStart = DateTime.Now.Ticks;
+                Point cursorPos = this.PointToClient(Cursor.Position);
 
-                Invalidate();
+                for (int i = 0; i < _squares.Count; i++ )
+                {
+                    if (_squares[i].Contains(cursorPos))
+                    {
+                        _selectedSquareIndex = i;
+                        _isMoving = true;
+                        break;
+                    }
+
+                }
             }
-            else if (_gestureOption == Enums.GestureFormOption.RecordSkeletonBuild)
+
+            if(_isMoving == false)
             {
-                BuildSkeletonSave.Text = "Save Skeleton";
-                BuildSkeletonSave.Visible = true;
-                _isDrawing = true;
-            }
-            else if (_gestureOption == Enums.GestureFormOption.RecognizeMultiStroke)
-            {
-                BuildSkeletonSave.Text = "Recognize Skeleton";
-                BuildSkeletonSave.Visible = true;
-                _isDrawing = true;
+                if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Record || _gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Recognize)
+                {
+                    _isDrawing = true;
+                    _newGesture.Points.Clear();
+                    _tickingCounter = 0;
+                    _tickingCounterStart = DateTime.Now.Ticks;
+
+                    Invalidate();
+                }
+                else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.RecordSkeletonBuild)
+                {
+                    BuildSkeletonSave.Text = "Save Skeleton";
+                    BuildSkeletonSave.Visible = true;
+                    _isDrawing = true;
+                }
+                else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.RecognizeMultiStroke)
+                {
+                    BuildSkeletonSave.Text = "Recognize Skeleton";
+                    BuildSkeletonSave.Visible = true;
+                    _isDrawing = true;
+                }
             }
         }
         private void GesturesForm_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_isDrawing)
+            if (_isMoving)
             {
-                if (_gestureOption == Enums.GestureFormOption.Record)
-                {
-                    GestureInfo.Text = "Recording...";
-                }
-                else if (_gestureOption == Enums.GestureFormOption.Recognize)
-                {
-                    GestureInfo.Text = "Recognizing...";
-                }
-       
-                _previousPoint = new Points(e.X, e.Y, 0, (DateTime.Now.Ticks - _tickingCounterStart) / 10000);
-                _newGesture.Points.Add(_previousPoint);
+                _squares[_selectedSquareIndex] = new Rectangle(e.X, e.Y, 20, 20);
+               this.Refresh();
+               DrawSquare(_squares[_selectedSquareIndex]);
+            }
+            else
+            {
 
-                Invalidate(new Rectangle(e.X - 2, e.Y - 2, 4, 4));
+                if (_isDrawing)
+                {
+                    if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Record)
+                    {
+                        GestureInfo.Text = "Recording...";
+                    }
+                    else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Recognize)
+                    {
+                        GestureInfo.Text = "Recognizing...";
+                    }
+
+                    _previousPoint = new Points(e.X, e.Y, 0, (DateTime.Now.Ticks - _tickingCounterStart) / 10000);
+                    _newGesture.Points.Add(_previousPoint);
+
+                    Invalidate(new Rectangle(e.X - 2, e.Y - 2, 4, 4));
+                }
             }
         }
         private void GesturesForm_MouseUp(object sender, MouseEventArgs e)
         {
-            if (_isDrawing)
+            if (_isMoving)
             {
-                _isDrawing = false;
+                _isMoving = false;
+                _selectedSquareIndex = -1;
+
+                if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Record)
+                {
+                    BuildSkeletonSave.Visible = true;
+                }
+                else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Recognize)
+                {
+                    BuildSkeletonSave.Text = "Recognize Skeleton";
+                    BuildSkeletonSave.Visible = true;
+                }
+            }
+            else if (_isDrawing)
+            {
+                    _isDrawing = false;
                     if (_newGesture.Points.Count > _mininumPointsValue)
                     {
-                        if (_gestureOption == Enums.GestureFormOption.Record)
+                        if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Record)
                         {
                             SaveFileDialog saveDialog = new SaveFileDialog();
                             saveDialog.Filter = "Gestures (*.xml)|*.xml";
@@ -170,11 +243,11 @@ namespace GestureRecognition.Forms
                             }
 
                             saveDialog.Dispose();
-                            _gestureOption = Enums.GestureFormOption.None;
+                            _gestureOption = GestureRecognition.Logic.Enums.GestureFormOption.None;
                             BuildSkeletonSave.Visible = false ;
                             Invalidate();
                         }
-                        else if (_gestureOption == Enums.GestureFormOption.Recognize)
+                        else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.Recognize)
                         {
                             Recognize();
                         }
@@ -190,7 +263,7 @@ namespace GestureRecognition.Forms
         {
             _isDrawing = false;
 
-            if (_gestureOption == Enums.GestureFormOption.RecordSkeletonBuild)
+            if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.RecordSkeletonBuild)
             {
                 SaveFileDialog saveDialog = new SaveFileDialog();
                 saveDialog.Filter = "Gestures (*.xml)|*.xml";
@@ -204,17 +277,24 @@ namespace GestureRecognition.Forms
                 }
 
                 saveDialog.Dispose();
-                _gestureOption = Enums.GestureFormOption.None;
+                _gestureOption = GestureRecognition.Logic.Enums.GestureFormOption.None;
                 Invalidate();
             }
-            else if (_gestureOption == Enums.GestureFormOption.RecognizeMultiStroke)
+            else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.RecognizeMultiStroke)
             {
                 Recognize();
             }
+            else if (_gestureOption == GestureRecognition.Logic.Enums.GestureFormOption.SquareRecognizer)
+            {
+                RecognizeSquares();
+            }
 
             Invalidate();
+
             _newGesture.Points.Clear();
+            _squares.Clear();
         }
+
 
         #endregion
 
@@ -341,10 +421,32 @@ namespace GestureRecognition.Forms
             else
             {
                 var recgonizer = new UnistrokeRecognizer.UnistrokeRecognizer();
+
                 var gesture =  recgonizer.Recognize(_newGesture.Points, _knownGestures, _recognizeMethods);
                 GestureInfo.Text = gesture.Name;
             }
 
+        }
+
+        private void RecognizeSquares()
+        {
+            if (_squares.Any() == false)
+            {
+                GestureInfo.Text = "Use squares...";
+            }
+            else
+            {
+
+            }
+        }
+
+        private void AddSquaresToTheMainPointList()
+        {
+            foreach (var item in _squares)
+            {
+                var sqPoints = MathHelper.GetPointsFromRectangle(item);
+                _newGesture.Points.AddRange(sqPoints);
+            }
         }
 
         private void DrawPoints()
@@ -359,7 +461,34 @@ namespace GestureRecognition.Forms
             }
         }
 
+        private void DrawSquare(int size)
+        {
+            System.Drawing.Graphics graphics = this.CreateGraphics();
+            var pen = new Pen(System.Drawing.Brushes.Red);
+            var rect = new Rectangle((int)100, (int)100, size, size);
+            
+            graphics.DrawRectangle(pen, rect );
+            graphics.FillRectangle(Brushes.Black, rect);
+
+            _squares.Add(rect);
+        }
+
+        private void DrawSquare(Rectangle _selectedSquare)
+        {
+            var pen = new Pen(System.Drawing.Brushes.Red);
+            graphics.DrawRectangle(pen, _selectedSquare);
+            graphics.FillRectangle(Brushes.Black, _selectedSquare);
+        }
+
+        private void SquareButton_Click(object sender, EventArgs e)
+        {
+            DrawSquare(20);
+        }
+
         #endregion
+
+    
+
 
 
 

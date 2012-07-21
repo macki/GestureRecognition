@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition.Unistrok
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition.VideoDataAnalyser", "GestureRecognition.VideoDataAnalyser\GestureRecognition.VideoDataAnalyser.csproj", "{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition.BodyTracking", "GestureRecognition.BodyTracking\GestureRecognition.BodyTracking.csproj", "{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,16 @@ Global
 		{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}.Release|x86.ActiveCfg = Release|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

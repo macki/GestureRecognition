@@ -30,6 +30,7 @@
         {
             this.GestureInfo = new System.Windows.Forms.Label();
             this.BuildSkeletonSave = new System.Windows.Forms.Button();
+            this.SquareButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GestureInfo
@@ -54,12 +55,23 @@
             this.BuildSkeletonSave.UseVisualStyleBackColor = true;
             this.BuildSkeletonSave.Click += new System.EventHandler(this.SaveSkeleton_Click);
             // 
+            // SquareButton
+            // 
+            this.SquareButton.Location = new System.Drawing.Point(485, 29);
+            this.SquareButton.Name = "SquareButton";
+            this.SquareButton.Size = new System.Drawing.Size(75, 23);
+            this.SquareButton.TabIndex = 2;
+            this.SquareButton.Text = "Square";
+            this.SquareButton.UseVisualStyleBackColor = true;
+            this.SquareButton.Click += new System.EventHandler(this.SquareButton_Click);
+            // 
             // GesturesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(562, 431);
+            this.Controls.Add(this.SquareButton);
             this.Controls.Add(this.BuildSkeletonSave);
             this.Controls.Add(this.GestureInfo);
             this.Name = "GesturesForm";
@@ -78,5 +90,6 @@
 
         private System.Windows.Forms.Label GestureInfo;
         private System.Windows.Forms.Button BuildSkeletonSave;
+        private System.Windows.Forms.Button SquareButton;
     }
 }
