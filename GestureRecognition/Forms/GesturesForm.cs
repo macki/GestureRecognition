@@ -85,20 +85,14 @@ namespace GestureRecognition.Forms
             SquareButton.Visible = true;
             GestureInfo.Text = "Use squares to recognize pattern...";
         }
-
         private void InitLoading()
         {
             GestureInfo.Text = "Loading...";
         }
-
         private void InitRecognizing()
         {
             GestureInfo.Text = "Draw a Gesture...";
         }
-
-        /// <summary>
-        /// Initlize recording
-        /// </summary>
         private void InitRecording()
         {
             GestureInfo.Text = "Recording...";

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GestureRecognition.Data.Interfaces;
 
 namespace GestureRecognition.Data.Models
 {
-    public class Records
+    public class Records : IModels
     {
         public int Id { get; set; }
+        public string Name { get; set; }
 
         public string AbsolutePath { get; set; }
         public string RelativePath { get; set; }

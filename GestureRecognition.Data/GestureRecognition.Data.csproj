@@ -49,8 +49,10 @@
   <ItemGroup>
     <Compile Include="DataProvider\DataProvider.cs" />
     <Compile Include="DataProvider\DataProvider.Records.cs" />
+    <Compile Include="DataSerialization\SerializeToXml.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="IDataContext.cs" />
+    <Compile Include="Interfaces\IModels.cs" />
     <Compile Include="Models\Gestures.cs" />
     <Compile Include="Models\Points.cs" />
     <Compile Include="Models\Records.cs" />
