@@ -54,9 +54,9 @@ namespace GestureRecognition
             this.unistrokeRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unistrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.multstrokeProtractorRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.squarePatternRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.GetCsvData_button = new System.Windows.Forms.Button();
-            this.squarePatternRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VideoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecordsGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -178,7 +178,7 @@ namespace GestureRecognition
             this.recognizeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(969, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(971, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -268,6 +268,13 @@ namespace GestureRecognition
             this.multstrokeProtractorRecognizerToolStripMenuItem.Text = "Multstroke Protractor Recognizer";
             this.multstrokeProtractorRecognizerToolStripMenuItem.Click += new System.EventHandler(this.MultistrokeProtractorRecognizer_Click);
             // 
+            // squarePatternRecognizerToolStripMenuItem
+            // 
+            this.squarePatternRecognizerToolStripMenuItem.Name = "squarePatternRecognizerToolStripMenuItem";
+            this.squarePatternRecognizerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.squarePatternRecognizerToolStripMenuItem.Text = "Square Pattern recognizer";
+            this.squarePatternRecognizerToolStripMenuItem.Click += new System.EventHandler(this.squarePatternRecognizerToolStripMenuItem_Click);
+            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
@@ -282,18 +289,11 @@ namespace GestureRecognition
             this.GetCsvData_button.UseVisualStyleBackColor = true;
             this.GetCsvData_button.Click += new System.EventHandler(this.GetSkeletonData_Click);
             // 
-            // squarePatternRecognizerToolStripMenuItem
-            // 
-            this.squarePatternRecognizerToolStripMenuItem.Name = "squarePatternRecognizerToolStripMenuItem";
-            this.squarePatternRecognizerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
-            this.squarePatternRecognizerToolStripMenuItem.Text = "Square Pattern recognizer";
-            this.squarePatternRecognizerToolStripMenuItem.Click += new System.EventHandler(this.squarePatternRecognizerToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(969, 610);
+            this.ClientSize = new System.Drawing.Size(971, 610);
             this.Controls.Add(this.GetCsvData_button);
             this.Controls.Add(this.RecordsGridView);
             this.Controls.Add(this.VideoPanel);

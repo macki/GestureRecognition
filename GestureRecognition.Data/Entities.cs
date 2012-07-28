@@ -12,6 +12,7 @@ namespace GestureRecognition.Data
     public class Entities  : DbContext, IDataContext
     {
         public DbSet<Records> Records { set; get; }
+        public DbSet<SelectionSquares> SelectionsSquares { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

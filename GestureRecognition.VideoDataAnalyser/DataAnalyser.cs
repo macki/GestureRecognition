@@ -67,9 +67,12 @@ namespace GestureRecognition.VideoDataAnalyser
         public void AddFrame(Bitmap newFrameBitmap)
         {
             var DepthArray = GetVideoFrameFromBitmap(newFrameBitmap);
+
             _videoFrame.Add(DepthArray);
+            _videoAnalyserForm.UpdateSquaresBody(_trackingSystem._selectionSquares);
 
             Draw(DepthArray.DepthArray, newFrameBitmap);
+            
         }
 
         private void Draw(List<Points> depthArray, Bitmap originalBitmap)
@@ -145,19 +148,6 @@ namespace GestureRecognition.VideoDataAnalyser
                 }
 
                 _videoAnalyserForm.SetSquareNumber(_trackingSystem._selectionSquares.Count.ToString());
-                //for (int j = 0; j < 20; j++)
-                //{
-                //    if ((int)_trackingSystem._selectionSquares[i].X + j < 320 && (int)_trackingSystem._selectionSquares[i].Y + j < 240)
-                //    {
-                //        try
-                //        {
-                //            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + j, (int)_trackingSystem._selectionSquares[i].Y, pixel2);
-                //            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + +20, (int)_trackingSystem._selectionSquares[i].Y + j, pixel2);
-                //            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + 0, (int)_trackingSystem._selectionSquares[i].Y + j, pixel2);
-                //            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + j, (int)_trackingSystem._selectionSquares[i].Y + 20, pixel2);
-                //        }catch(Exception e){}
-                //    }
-                //}
             }
 
                 return bitmap;

@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\BodyPartSquaresRecognizer_Head.cs" />
+    <Compile Include="Interfaces\IBodyRecognizer.cs" />
+    <Compile Include="Logic\BodyPartSquaresRecognizer.cs" />
+    <Compile Include="Logic\SquaresRecognizer.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,7 +80,15 @@
       <Project>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</Project>
       <Name>GestureRecognition.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MackiTools\MackiTools.csproj">
+      <Project>{4B8090B6-4936-4DD9-8178-EAB547C98B73}</Project>
+      <Name>MackiTools</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

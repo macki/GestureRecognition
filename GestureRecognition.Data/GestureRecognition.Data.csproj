@@ -47,10 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataProvider\DataProvider.SelectionSquares.cs" />
     <Compile Include="DataProvider\DataProvider.cs" />
     <Compile Include="DataProvider\DataProvider.Records.cs" />
     <Compile Include="DataSerialization\SerializeToXml.cs" />
     <Compile Include="Entities.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="IDataContext.cs" />
     <Compile Include="Interfaces\IModels.cs" />
     <Compile Include="Models\Gestures.cs" />
@@ -60,7 +62,12 @@
     <Compile Include="Models\VideoFrames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MackiTools\MackiTools.csproj">
+      <Project>{4B8090B6-4936-4DD9-8178-EAB547C98B73}</Project>
+      <Name>MackiTools</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

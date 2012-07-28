@@ -10,10 +10,18 @@ namespace GestureRecognition.Data.DataSerialization
 {
     public class SerializeToXml<T>
     {
-        public static void Serialize<T>(T model, string output)
+        public static void Serialize<T>(T model, string output, bool defaultPath = true)
         {
             var serializer = new XmlSerializer(typeof(T));
-            var writer = new StreamWriter(@"C:\Users\macki\Desktop\magisterka\GestureRecognition\Output\" + output +  ".xml");
+            StreamWriter writer;
+            if (defaultPath)
+            {
+                writer = new StreamWriter(@"C:\Users\macki\Desktop\magisterka\GestureRecognition\Output\" + output + ".xml");
+            }
+            else
+            {
+                writer = new StreamWriter(output);
+            }
             serializer.Serialize(writer, model);
             writer.Close();
         }
@@ -26,10 +34,18 @@ namespace GestureRecognition.Data.DataSerialization
             writer.Close();
         }
 
-        public static List<T> Deserialize(string input)
+
+        public static List<T> Deserialize(string input, bool defaultPath = true)
         {
             XmlSerializer deserializer = new XmlSerializer(typeof(List<T>));
-            TextReader textReader = new StreamReader(@"C:\Users\macki\Desktop\magisterka\GestureRecognition\Output\" + input + ".xml");
+            TextReader textReader; 
+            if(defaultPath)
+            {
+                textReader = new StreamReader(@"C:\Users\macki\Desktop\magisterka\GestureRecognition\Output\" + input + ".xml");
+            }else{
+                textReader = new StreamReader(input);
+            }
+
             var obj = (List<T>)deserializer.Deserialize(textReader);
             textReader.Close();
             return obj;

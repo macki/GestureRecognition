@@ -14,6 +14,7 @@ namespace GestureRecognition.SquaresRecognizer
 {
     public partial class Main : Form
     {
+        private SquaresRecognizer.Logic.SquaresRecognizer _sqauresRecognizer = new SquaresRecognizer.Logic.SquaresRecognizer();
         private List<Rectangle> _rects = new List<Rectangle>();
         private List<Rectangle> _selectedRects = new List<Rectangle>();
         private List<Rectangle> _selectedRectsPattern = new List<Rectangle>();
@@ -36,23 +37,21 @@ namespace GestureRecognition.SquaresRecognizer
         
         private void button1_Click(object sender, EventArgs e)
         {
-            _rects.Clear();
-            Refresh();
+            DrawRecognizerGrid(int.Parse(SquareSizeTextBox.Text));
+        }
+        private void LoadSkeleton_OnClick(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Gestures (*.xml)|*.xml";
+            dlg.Title = "Load Gestures";
+            dlg.Multiselect = false;
+            dlg.RestoreDirectory = false;
+            dlg.InitialDirectory = System.Configuration.ConfigurationSettings.AppSettings.GetValues("SkeletonBodySquares")[0];
 
-            System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
-            System.Drawing.Graphics formGraphics = this.CreateGraphics();
-
-            _stepSize = Int16.Parse(SquareSizeTextBox.Text);
-
-            for (int i = 0; i < _cW; i = i + _stepSize)
+            if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                for (int j = 0; j < _cH; j = j + _stepSize)
-                {
-                    var pen = new Pen(Brushes.Black);
-                    var r = new Rectangle(i, j, _stepSize, _stepSize);
-                    formGraphics.DrawRectangle(pen, r);
-                    _rects.Add(r);
-                }
+                var squareSkeleton = SerializeToXml<Rectangle>.Deserialize("test1");
+                DrawLoadedSkeletonSquareBody(squareSkeleton);
             }
         }
 
@@ -91,6 +90,7 @@ namespace GestureRecognition.SquaresRecognizer
                                 formGraphics.FillRectangle(Brushes.Blue, _rects[i]);
                                 var rect = new Rectangle(_rects[i].X, _rects[i].Y, _stepSize, _stepSize);
                                 _selectedRectsPattern.Add(rect);
+                                _selectedRects.Add(rect);
                             }
                         }
                     }
@@ -99,7 +99,7 @@ namespace GestureRecognition.SquaresRecognizer
             }
 
             //set other propertiies
-            SquareCounter.Text = (_selectedRectsPattern.Count + _selectedRects.Count).ToString();
+            SquareCounter.Text = (_selectedRects.Count).ToString();
         }
 
         private void ActivePatternColor_Paint(object sender, EventArgs e)
@@ -117,14 +117,63 @@ namespace GestureRecognition.SquaresRecognizer
 
         private void Head_Learn_Click(object sender, EventArgs e)
         {
-            
+            _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Head);
+        }
+
+        #endregion
+
+        #region Events Recognize
+
+        private void RecognizeHead_Click(object sender, EventArgs e)
+        {
+            _sqauresRecognizer.Recognize(_selectedRects, Data.Enums.BodyPart.Head);
         }
 
         #endregion
 
 
-        #region Events Recognize
+        #region Methods
 
+        private void DrawLoadedSkeletonSquareBody(List<Rectangle> squareSkeleton)
+        {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+
+            int squareSkeleletonSize = squareSkeleton[0].Width;
+            DrawRecognizerGrid(squareSkeleletonSize);
+
+            foreach (var item in squareSkeleton)
+            {
+                if (_rects.Contains(item))
+                {
+                    formGraphics.FillRectangle(Brushes.Red, item);
+                    var rect = new Rectangle(item.X, item.Y, _stepSize, _stepSize);
+                    _selectedRects.Add(rect);
+                }
+            }
+        }
+
+        private void DrawRecognizerGrid(int squareSize)
+        {
+            _rects.Clear();
+            _selectedRectsPattern.Clear();
+            Refresh();
+
+            System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+
+            _stepSize = squareSize;
+
+            for (int i = 0; i < _cW; i = i + _stepSize)
+            {
+                for (int j = 0; j < _cH; j = j + _stepSize)
+                {
+                    var pen = new Pen(Brushes.Black);
+                    var r = new Rectangle(i, j, _stepSize, _stepSize);
+                    formGraphics.DrawRectangle(pen, r);
+                    _rects.Add(r);
+                }
+            }
+        }
 
         #endregion
 

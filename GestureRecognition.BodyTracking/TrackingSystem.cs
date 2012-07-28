@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using GestureRecognition.Data.Models;
 using GestureRecognition.UnistrokeRecognizer.Logic;
+using System.Drawing;
 
 namespace GestureRecognition.BodyTracking
 {
     public partial class TrackingSystem
     {
         private List<int> _depthArray;
-        public List<RectangleD> _selectionSquares;
+        public  List<Rectangle> _selectionSquares;
         private List<Points> _depthPoints;
         private int _cameraWidth = 320;
         private int _cameraHeight = 240;
@@ -115,7 +116,7 @@ namespace GestureRecognition.BodyTracking
         public List<Points> GetBody(ref List<Points> bodyDept)
         {
             //var centroidOfBody = MathHelper.CalculateCentroid(bodyDept);
-            _selectionSquares = new List<RectangleD>();
+            _selectionSquares = new List<Rectangle>();
 
             int posY = -1;
             bool add = true;
@@ -133,7 +134,7 @@ namespace GestureRecognition.BodyTracking
                 {
                     if(add == true && ((int)bodyDept[i].Y == posY))
                     {
-                        _selectionSquares.Add(new RectangleD(bodyDept[i].X, bodyDept[i].Y, squareSize, squareSize));
+                        _selectionSquares.Add(new Rectangle((int)bodyDept[i].X, (int)bodyDept[i].Y, squareSize, squareSize));
                     }
                 }
 
