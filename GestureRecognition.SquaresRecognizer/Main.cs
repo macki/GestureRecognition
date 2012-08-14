@@ -16,6 +16,7 @@ namespace GestureRecognition.SquaresRecognizer
     {
         private SquaresRecognizer.Logic.SquaresRecognizer _sqauresRecognizer = new SquaresRecognizer.Logic.SquaresRecognizer();
         private List<Rectangle> _rects = new List<Rectangle>();
+        private List<Rectangle> _loadedRectsBody;
         private List<Rectangle> _selectedRects = new List<Rectangle>();
         private List<Rectangle> _selectedRectsPattern = new List<Rectangle>();
         private int _cW = 320;
@@ -39,8 +40,11 @@ namespace GestureRecognition.SquaresRecognizer
         {
             DrawRecognizerGrid(int.Parse(SquareSizeTextBox.Text));
         }
+
         private void LoadSkeleton_OnClick(object sender, EventArgs e)
         {
+            ClearData();
+
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "Gestures (*.xml)|*.xml";
             dlg.Title = "Load Gestures";
@@ -50,7 +54,8 @@ namespace GestureRecognition.SquaresRecognizer
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                var squareSkeleton = SerializeToXml<Rectangle>.Deserialize("test1");
+                var squareSkeleton = SerializeToXml<Rectangle>.Deserialize(dlg.FileName, false);
+                _loadedRectsBody = new List<Rectangle>(squareSkeleton);
                 DrawLoadedSkeletonSquareBody(squareSkeleton);
             }
         }
@@ -111,6 +116,26 @@ namespace GestureRecognition.SquaresRecognizer
             _isActiveSelecting = false;
         }
 
+        private void ResetGribds_OnClick(object sender, MouseEventArgs e)
+        {
+            if (_loadedRectsBody != null)
+            {
+                ClearData();
+                DrawLoadedSkeletonSquareBody(_loadedRectsBody);
+            }
+            else
+            {
+                MessageBox.Show("Load body first plz...");
+            }
+        }
+
+        private void ClearData()
+        {
+            _selectedRects.Clear();
+            _rects.Clear();
+            _selectedRectsPattern.Clear();
+        }
+
         #endregion
 
         #region Events Learn
@@ -119,6 +144,26 @@ namespace GestureRecognition.SquaresRecognizer
         {
             _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Head);
         }
+        private void TorsLearn_OnClick(object sender, EventArgs e)
+        {
+            _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Torso);
+        }
+        private void HandsLearn_OnClick(object sender, EventArgs e)
+        {
+            _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Hands);
+        }
+        private void LeftHandLarnButton(object sender, EventArgs e)
+        {
+            _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.LeftHand);
+        }
+        private void RightHandLearn_OnClick(object sender, EventArgs e)
+        {
+            _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.RightHand);
+        }
+        private void LegsLearn(object sender, EventArgs e)
+        {
+            _sqauresRecognizer.Learn(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Legs);
+        }
 
         #endregion
 
@@ -126,11 +171,36 @@ namespace GestureRecognition.SquaresRecognizer
 
         private void RecognizeHead_Click(object sender, EventArgs e)
         {
-            _sqauresRecognizer.Recognize(_selectedRects, Data.Enums.BodyPart.Head);
+            var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Head);
+            DrawRecognizeBodyPart(recognizeArea.ToList());
+        }
+        private void TorsButtonRecognize_Onclick(object sender, EventArgs e)
+        {
+            var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Torso);
+            DrawRecognizeBodyPart(recognizeArea.ToList());
+        }
+        private void HandsButtonRecognize_Onclic(object sender, EventArgs e)
+        {
+            var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Hands);
+            DrawRecognizeBodyPart(recognizeArea.ToList());
+        }
+        private void LeftHand_ButtonRecognize_Onclic(object sender, EventArgs e)
+        {
+            var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.LeftHand);
+            DrawRecognizeBodyPart(recognizeArea.ToList());
+        }
+        private void RightHand_ButtonRecognize_Onclic(object sender, EventArgs e)
+        {
+            var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.RightHand);
+            DrawRecognizeBodyPart(recognizeArea.ToList());
+        }
+        private void Legs_ButtonRecognize_Onclic(object sender, EventArgs e)
+        {
+            var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Legs);
+            DrawRecognizeBodyPart(recognizeArea.ToList());
         }
 
         #endregion
-
 
         #region Methods
 
@@ -149,6 +219,15 @@ namespace GestureRecognition.SquaresRecognizer
                     var rect = new Rectangle(item.X, item.Y, _stepSize, _stepSize);
                     _selectedRects.Add(rect);
                 }
+            }
+        }
+
+        private void DrawRecognizeBodyPart(List<Rectangle> bodyParts)
+        {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+            foreach (var item in bodyParts)
+            {
+                formGraphics.FillRectangle(Brushes.Green, item);
             }
         }
 
@@ -175,9 +254,12 @@ namespace GestureRecognition.SquaresRecognizer
             }
         }
 
+        private void SetScoreLabel(double score)
+        {
+            ScoreLabel.Text = score.ToString();
+        }
+
         #endregion
-
-
 
     }
 }

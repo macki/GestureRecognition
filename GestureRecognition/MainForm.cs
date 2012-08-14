@@ -99,7 +99,7 @@ namespace GestureRecognition
             DateTime now = DateTime.Now;
             Graphics g = Graphics.FromImage(image);
 
-            _videDataAnalyser.AddFrame(image);
+            _videDataAnalyser.AddFrame(image, PlayWithAutoSaving.Checked);
 
             // paint current time
             SolidBrush brush = new SolidBrush(Color.Red);

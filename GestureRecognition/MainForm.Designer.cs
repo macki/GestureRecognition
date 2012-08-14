@@ -57,6 +57,7 @@ namespace GestureRecognition
             this.squarePatternRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.GetCsvData_button = new System.Windows.Forms.Button();
+            this.PlayWithAutoSaving = new System.Windows.Forms.CheckBox();
             this.VideoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecordsGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -64,6 +65,7 @@ namespace GestureRecognition
             // 
             // VideoPanel
             // 
+            this.VideoPanel.Controls.Add(this.PlayWithAutoSaving);
             this.VideoPanel.Controls.Add(this.PauseButton);
             this.VideoPanel.Controls.Add(this.IsRgbCheckBox);
             this.VideoPanel.Controls.Add(this.SaveButton);
@@ -72,14 +74,14 @@ namespace GestureRecognition
             this.VideoPanel.Controls.Add(this.VideoSource);
             this.VideoPanel.Location = new System.Drawing.Point(12, 23);
             this.VideoPanel.Name = "VideoPanel";
-            this.VideoPanel.Size = new System.Drawing.Size(427, 389);
+            this.VideoPanel.Size = new System.Drawing.Size(551, 389);
             this.VideoPanel.TabIndex = 0;
             // 
             // PauseButton
             // 
-            this.PauseButton.Location = new System.Drawing.Point(335, 352);
+            this.PauseButton.Location = new System.Drawing.Point(335, 351);
             this.PauseButton.Name = "PauseButton";
-            this.PauseButton.Size = new System.Drawing.Size(75, 23);
+            this.PauseButton.Size = new System.Drawing.Size(82, 23);
             this.PauseButton.TabIndex = 5;
             this.PauseButton.Text = "Pause";
             this.PauseButton.UseVisualStyleBackColor = true;
@@ -289,6 +291,16 @@ namespace GestureRecognition
             this.GetCsvData_button.UseVisualStyleBackColor = true;
             this.GetCsvData_button.Click += new System.EventHandler(this.GetSkeletonData_Click);
             // 
+            // PlayWithAutoSaving
+            // 
+            this.PlayWithAutoSaving.AutoSize = true;
+            this.PlayWithAutoSaving.Location = new System.Drawing.Point(423, 326);
+            this.PlayWithAutoSaving.Name = "PlayWithAutoSaving";
+            this.PlayWithAutoSaving.Size = new System.Drawing.Size(133, 17);
+            this.PlayWithAutoSaving.TabIndex = 6;
+            this.PlayWithAutoSaving.Text = "with auto saving (slow)";
+            this.PlayWithAutoSaving.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -336,6 +348,7 @@ namespace GestureRecognition
         private System.Windows.Forms.ToolStripMenuItem clearMemoryToolStripMenuItem;
         private System.Windows.Forms.Button PauseButton;
         private System.Windows.Forms.ToolStripMenuItem squarePatternRecognizerToolStripMenuItem;
+        private System.Windows.Forms.CheckBox PlayWithAutoSaving;
 
     }
 }

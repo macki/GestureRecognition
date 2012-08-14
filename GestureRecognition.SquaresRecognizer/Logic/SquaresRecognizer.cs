@@ -39,7 +39,6 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 _trainedItems.Add(selectionSquare);
             }
         }
-       
         public void Learn(List<Rectangle> wholePattern, List<Rectangle> pattern, Enums.BodyPart bodyPart )
         {
             _processingItem = new SelectionSquares() { WholePattern = wholePattern, ProperPattern = pattern, BodyPart = (int)bodyPart };
@@ -52,11 +51,7 @@ namespace GestureRecognition.SquaresRecognizer.Logic
         }
         private void CalculateBodyParamters()
         {
-            _processingItem.CalculateBodyRatio();
-            _processingItem.CalculateFullBodyCentroid();
-            _processingItem.CalculatePatternCentroid();
-            _processingItem.CalculatePatternHeight();
-            _processingItem.CalculatePatternWidth();
+            _processingItem.CalculateBodyParameters();
         }
         private void Save()
         {
@@ -74,14 +69,25 @@ namespace GestureRecognition.SquaresRecognizer.Logic
             }
         }
 
-        public void Recognize(List<Rectangle> bodyToRecognize, Enums.BodyPart bodyPart)
+        public IEnumerable<Rectangle> Recognize(List<Rectangle> wholeBodyToRecognize, List<Rectangle> selectedPattern, Enums.BodyPart bodyPart)
         {
            switch(bodyPart)
            {
                case Enums.BodyPart.Head:
-                   var rec = new BodyPartSquaresRecognizer_Head();
-                   break;
+                   var headRecognizer = new BodyPartSquaresRecognizer_Head(wholeBodyToRecognize, selectedPattern, GetSpecifiedBodyPart(bodyPart).ToList());
+                   return headRecognizer.RecognizeBodyPart();
+               case Enums.BodyPart.Torso:
+                   var torsRecognizer = new BodyPartSquaresRecognizer_Tors(wholeBodyToRecognize, selectedPattern, _trainedItems);
+                   return torsRecognizer.RecognizeBodyPart();
+
            }
+
+           return null;
+        }
+
+        private IEnumerable<SelectionSquares> GetSpecifiedBodyPart(Enums.BodyPart bodyPart)
+        {
+            return _trainedItems.Where(x => x.BodyPart == (int)bodyPart);
         }
 
 

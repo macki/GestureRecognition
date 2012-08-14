@@ -39,6 +39,8 @@ namespace GestureRecognition.Data.Models
 
         [NotMappedAttribute]
         public double Score { get; set; }
+        [NotMappedAttribute]
+        public List<double> ComparisonVector { get; set;}
 
         public SelectionSquares()
         {
@@ -46,19 +48,38 @@ namespace GestureRecognition.Data.Models
             WholePattern = new List<Rectangle>();
             ProperPattern = new List<Rectangle>();
         }
+        public void CalculateBodyParameters()
+        {
+            this.CalculateBodyRatio();
+            this.CalculateFullBodyCentroid();
+            this.CalculatePatternCentroid();
+            this.CalculatePatternHeight();
+            this.CalculatePatternWidth();
+        }
+        public IEnumerable<double> CompareBodyParameters(SelectionSquares newBody)
+        {
+            ComparisonVector = new List<double>();
 
-        public void CalculateBodyRatio()
+            DiffBodyRatio(ref newBody, ComparisonVector);
+            DiffPatternWidth(ref newBody, ComparisonVector);
+            DiffPatternHeight(ref newBody, ComparisonVector);
+            DiffPatternCentroid(ref newBody, ComparisonVector);
+
+            return ComparisonVector;
+        }
+
+        private void CalculateBodyRatio()
         {
            BodyRatio =  (double)ProperPattern.Count / (double)WholePattern.Count;
         }
-        public void CalculatePatternWidth()
+        private void CalculatePatternWidth()
         {
             int minWidth = ProperPattern.Min(x => x.X);
             int maxWidth = ProperPattern.Max(x => x.X);
 
             PatternWidth = maxWidth - minWidth;
         }
-        public void CalculatePatternHeight()
+        private void CalculatePatternHeight()
         {
             int minWidth = ProperPattern.Min(x => x.Y);
             int maxWidth = ProperPattern.Max(x => x.Y);
@@ -69,9 +90,31 @@ namespace GestureRecognition.Data.Models
         {
             FullBodyCentroid = RectanglesUtil.GetCentroid(WholePattern);
         }
-        public void CalculatePatternCentroid()
+        private void CalculatePatternCentroid()
         {
             PatternCentroid = RectanglesUtil.GetCentroid(ProperPattern);
+        }
+        private void DiffBodyRatio(ref SelectionSquares newBody, List<double> ComparisonVector)
+        {
+            var difBodyRatio = Math.Abs((newBody.BodyRatio - this.BodyRatio));
+            ComparisonVector.Add(difBodyRatio);
+        }
+        private void DiffPatternWidth(ref SelectionSquares newBody, List<double> ComparisonVector)
+        {
+            var dif = Math.Abs((newBody.PatternWidth - this.PatternWidth));
+            ComparisonVector.Add(dif);
+        }
+        private void DiffPatternCentroid(ref SelectionSquares newBody, List<double> ComparisonVector)
+        {
+            var difPointX =  Math.Abs((newBody.PatternCentroid.X - this.PatternCentroid.X));
+            var difPointY = Math.Abs((newBody.PatternCentroid.Y - this.PatternCentroid.Y));
+            ComparisonVector.Add(difPointX);
+            ComparisonVector.Add(difPointY);
+        }
+        private void DiffPatternHeight(ref SelectionSquares newBody, List<double> ComparisonVector)
+        {
+            var dif = Math.Abs((newBody.PatternHeight - this.PatternHeight));
+            ComparisonVector.Add(dif);
         }
     }
 }

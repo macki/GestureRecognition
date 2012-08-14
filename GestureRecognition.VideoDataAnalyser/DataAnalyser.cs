@@ -8,6 +8,7 @@ using GestureRecognition.Data.Models;
 using GestureRecognition.VideoDataAnalyser.Forms;
 using GestureRecognition.BodyTracking;
 using GestureRecognition.UnistrokeRecognizer.Logic;
+using GestureRecognition.Data.DataSerialization;
 
 namespace GestureRecognition.VideoDataAnalyser
 {
@@ -25,6 +26,8 @@ namespace GestureRecognition.VideoDataAnalyser
         private int _minimumDistanceFromCamera = 0;
         private int _maximalDistanceFromCamera = 0;
         private int _accuracy = 0;
+
+        private bool _playWithAutoSave = false;
         
 
         #endregion
@@ -64,8 +67,10 @@ namespace GestureRecognition.VideoDataAnalyser
             _accuracy = int.Parse(depthInfoRow[4]);
         }
 
-        public void AddFrame(Bitmap newFrameBitmap)
+        public void AddFrame(Bitmap newFrameBitmap, bool playWithAutoSave)
         {
+            _playWithAutoSave = playWithAutoSave;
+
             var DepthArray = GetVideoFrameFromBitmap(newFrameBitmap);
 
             _videoFrame.Add(DepthArray);
@@ -150,6 +155,12 @@ namespace GestureRecognition.VideoDataAnalyser
                 _videoAnalyserForm.SetSquareNumber(_trackingSystem._selectionSquares.Count.ToString());
             }
 
+            // autoSave
+            if(_playWithAutoSave)
+            {
+                AutoSave();
+            }
+
                 return bitmap;
         }
 
@@ -181,6 +192,13 @@ namespace GestureRecognition.VideoDataAnalyser
 
             return videoFrame;
         }
+
+        private void AutoSave()
+        {
+            var fileName = "C:\\Users\\macki\\Desktop\\magisterka\\GestureRecognition\\Output\\Learned\\FullBody\\Auto\\" + DateTime.Now.Ticks.ToString() + ".xml" ;
+            SerializeToXml<Rectangle>.Serialize(_trackingSystem._selectionSquares, fileName, false);
+        }
+
 
         #endregion
 

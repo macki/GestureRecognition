@@ -51,6 +51,7 @@
     <Compile Include="Logic\BodyPartSquaresRecognizer_Head.cs" />
     <Compile Include="Interfaces\IBodyRecognizer.cs" />
     <Compile Include="Logic\BodyPartSquaresRecognizer.cs" />
+    <Compile Include="Logic\BodyPartSquaresRecognizer_Tors.cs" />
     <Compile Include="Logic\SquaresRecognizer.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>

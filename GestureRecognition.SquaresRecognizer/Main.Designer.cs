@@ -43,6 +43,18 @@
             this.SquareCounter = new System.Windows.Forms.Label();
             this.LoadSkeletonButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.ResetGridsButton = new System.Windows.Forms.Button();
+            this.ScoreLabel = new System.Windows.Forms.Label();
+            this.TorsLearnButton = new System.Windows.Forms.Button();
+            this.HandsLearnButton = new System.Windows.Forms.Button();
+            this.LeftHandLearnButton = new System.Windows.Forms.Button();
+            this.RightHandButton = new System.Windows.Forms.Button();
+            this.LegsButton = new System.Windows.Forms.Button();
+            this.LegsButtonRecognize = new System.Windows.Forms.Button();
+            this.RightHandButtonRecognize = new System.Windows.Forms.Button();
+            this.LeftHandButtonRecognize = new System.Windows.Forms.Button();
+            this.HandsButtonRecognize = new System.Windows.Forms.Button();
+            this.TorsButtonRecognize = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -183,12 +195,145 @@
             this.button3.Text = "Recognize Full Body";
             this.button3.UseVisualStyleBackColor = true;
             // 
+            // ResetGridsButton
+            // 
+            this.ResetGridsButton.Location = new System.Drawing.Point(459, 12);
+            this.ResetGridsButton.Name = "ResetGridsButton";
+            this.ResetGridsButton.Size = new System.Drawing.Size(75, 23);
+            this.ResetGridsButton.TabIndex = 15;
+            this.ResetGridsButton.Text = "Reset Grids";
+            this.ResetGridsButton.UseVisualStyleBackColor = true;
+            this.ResetGridsButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ResetGribds_OnClick);
+            // 
+            // ScoreLabel
+            // 
+            this.ScoreLabel.AutoSize = true;
+            this.ScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ScoreLabel.ForeColor = System.Drawing.Color.Red;
+            this.ScoreLabel.Location = new System.Drawing.Point(567, 424);
+            this.ScoreLabel.Name = "ScoreLabel";
+            this.ScoreLabel.Size = new System.Drawing.Size(48, 18);
+            this.ScoreLabel.TabIndex = 16;
+            this.ScoreLabel.Text = "Score";
+            // 
+            // TorsLearnButton
+            // 
+            this.TorsLearnButton.Location = new System.Drawing.Point(84, 343);
+            this.TorsLearnButton.Name = "TorsLearnButton";
+            this.TorsLearnButton.Size = new System.Drawing.Size(75, 23);
+            this.TorsLearnButton.TabIndex = 17;
+            this.TorsLearnButton.Text = "Tors";
+            this.TorsLearnButton.UseVisualStyleBackColor = true;
+            this.TorsLearnButton.Click += new System.EventHandler(this.TorsLearn_OnClick);
+            // 
+            // HandsLearnButton
+            // 
+            this.HandsLearnButton.Location = new System.Drawing.Point(165, 343);
+            this.HandsLearnButton.Name = "HandsLearnButton";
+            this.HandsLearnButton.Size = new System.Drawing.Size(75, 23);
+            this.HandsLearnButton.TabIndex = 18;
+            this.HandsLearnButton.Text = "Hands";
+            this.HandsLearnButton.UseVisualStyleBackColor = true;
+            this.HandsLearnButton.Click += new System.EventHandler(this.HandsLearn_OnClick);
+            // 
+            // LeftHandLearnButton
+            // 
+            this.LeftHandLearnButton.Location = new System.Drawing.Point(246, 343);
+            this.LeftHandLearnButton.Name = "LeftHandLearnButton";
+            this.LeftHandLearnButton.Size = new System.Drawing.Size(75, 23);
+            this.LeftHandLearnButton.TabIndex = 19;
+            this.LeftHandLearnButton.Text = "LeftHand";
+            this.LeftHandLearnButton.UseVisualStyleBackColor = true;
+            this.LeftHandLearnButton.Click += new System.EventHandler(this.LeftHandLarnButton);
+            // 
+            // RightHandButton
+            // 
+            this.RightHandButton.Location = new System.Drawing.Point(327, 343);
+            this.RightHandButton.Name = "RightHandButton";
+            this.RightHandButton.Size = new System.Drawing.Size(75, 23);
+            this.RightHandButton.TabIndex = 20;
+            this.RightHandButton.Text = "Right Hand";
+            this.RightHandButton.UseVisualStyleBackColor = true;
+            this.RightHandButton.Click += new System.EventHandler(this.RightHandLearn_OnClick);
+            // 
+            // LegsButton
+            // 
+            this.LegsButton.Location = new System.Drawing.Point(408, 343);
+            this.LegsButton.Name = "LegsButton";
+            this.LegsButton.Size = new System.Drawing.Size(75, 23);
+            this.LegsButton.TabIndex = 21;
+            this.LegsButton.Text = "Legs";
+            this.LegsButton.UseVisualStyleBackColor = true;
+            this.LegsButton.Click += new System.EventHandler(this.LegsLearn);
+            // 
+            // LegsButtonRecognize
+            // 
+            this.LegsButtonRecognize.Location = new System.Drawing.Point(408, 395);
+            this.LegsButtonRecognize.Name = "LegsButtonRecognize";
+            this.LegsButtonRecognize.Size = new System.Drawing.Size(75, 23);
+            this.LegsButtonRecognize.TabIndex = 26;
+            this.LegsButtonRecognize.Text = "Legs";
+            this.LegsButtonRecognize.UseVisualStyleBackColor = true;
+            this.LegsButtonRecognize.Click += new System.EventHandler(this.Legs_ButtonRecognize_Onclic);
+            // 
+            // RightHandButtonRecognize
+            // 
+            this.RightHandButtonRecognize.Location = new System.Drawing.Point(327, 395);
+            this.RightHandButtonRecognize.Name = "RightHandButtonRecognize";
+            this.RightHandButtonRecognize.Size = new System.Drawing.Size(75, 23);
+            this.RightHandButtonRecognize.TabIndex = 25;
+            this.RightHandButtonRecognize.Text = "Right Hand";
+            this.RightHandButtonRecognize.UseVisualStyleBackColor = true;
+            this.RightHandButtonRecognize.Click += new System.EventHandler(this.RightHand_ButtonRecognize_Onclic);
+            // 
+            // LeftHandButtonRecognize
+            // 
+            this.LeftHandButtonRecognize.Location = new System.Drawing.Point(246, 395);
+            this.LeftHandButtonRecognize.Name = "LeftHandButtonRecognize";
+            this.LeftHandButtonRecognize.Size = new System.Drawing.Size(75, 23);
+            this.LeftHandButtonRecognize.TabIndex = 24;
+            this.LeftHandButtonRecognize.Text = "LeftHand";
+            this.LeftHandButtonRecognize.UseVisualStyleBackColor = true;
+            this.LeftHandButtonRecognize.Click += new System.EventHandler(this.LeftHand_ButtonRecognize_Onclic);
+            // 
+            // HandsButtonRecognize
+            // 
+            this.HandsButtonRecognize.Location = new System.Drawing.Point(165, 395);
+            this.HandsButtonRecognize.Name = "HandsButtonRecognize";
+            this.HandsButtonRecognize.Size = new System.Drawing.Size(75, 23);
+            this.HandsButtonRecognize.TabIndex = 23;
+            this.HandsButtonRecognize.Text = "Hands";
+            this.HandsButtonRecognize.UseVisualStyleBackColor = true;
+            this.HandsButtonRecognize.Click += new System.EventHandler(this.HandsButtonRecognize_Onclic);
+            // 
+            // TorsButtonRecognize
+            // 
+            this.TorsButtonRecognize.Location = new System.Drawing.Point(84, 395);
+            this.TorsButtonRecognize.Name = "TorsButtonRecognize";
+            this.TorsButtonRecognize.Size = new System.Drawing.Size(75, 23);
+            this.TorsButtonRecognize.TabIndex = 22;
+            this.TorsButtonRecognize.Text = "Tors";
+            this.TorsButtonRecognize.UseVisualStyleBackColor = true;
+            this.TorsButtonRecognize.Click += new System.EventHandler(this.TorsButtonRecognize_Onclick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(624, 453);
+            this.Controls.Add(this.LegsButtonRecognize);
+            this.Controls.Add(this.RightHandButtonRecognize);
+            this.Controls.Add(this.LeftHandButtonRecognize);
+            this.Controls.Add(this.HandsButtonRecognize);
+            this.Controls.Add(this.TorsButtonRecognize);
+            this.Controls.Add(this.LegsButton);
+            this.Controls.Add(this.RightHandButton);
+            this.Controls.Add(this.LeftHandLearnButton);
+            this.Controls.Add(this.HandsLearnButton);
+            this.Controls.Add(this.TorsLearnButton);
+            this.Controls.Add(this.ScoreLabel);
+            this.Controls.Add(this.ResetGridsButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.LoadSkeletonButton);
             this.Controls.Add(this.SquareCounter);
@@ -229,6 +374,18 @@
         private System.Windows.Forms.Label SquareCounter;
         private System.Windows.Forms.Button LoadSkeletonButton;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button ResetGridsButton;
+        private System.Windows.Forms.Label ScoreLabel;
+        private System.Windows.Forms.Button TorsLearnButton;
+        private System.Windows.Forms.Button HandsLearnButton;
+        private System.Windows.Forms.Button LeftHandLearnButton;
+        private System.Windows.Forms.Button RightHandButton;
+        private System.Windows.Forms.Button LegsButton;
+        private System.Windows.Forms.Button LegsButtonRecognize;
+        private System.Windows.Forms.Button RightHandButtonRecognize;
+        private System.Windows.Forms.Button LeftHandButtonRecognize;
+        private System.Windows.Forms.Button HandsButtonRecognize;
+        private System.Windows.Forms.Button TorsButtonRecognize;
 
 
     }

@@ -29,6 +29,7 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
             ThreadSafeFunction(value);
         }
 
+
         private void ThreadSafeFunction(string value)
         {
             if (this.InvokeRequired)
@@ -53,7 +54,7 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
 
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                SerializeToXml<Rectangle>.Serialize(_squaresBody, saveDialog.FileName);
+                SerializeToXml<Rectangle>.Serialize(_squaresBody, saveDialog.FileName, false);
             }        
         }
 
