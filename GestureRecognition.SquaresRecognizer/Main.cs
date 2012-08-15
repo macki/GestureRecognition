@@ -29,7 +29,15 @@ namespace GestureRecognition.SquaresRecognizer
         
         public Main()
         {
-            InitializeComponent();   
+            InitializeComponent();
+            LoadBasicFullBody();
+        }
+
+        private void LoadBasicFullBody()
+        {
+            var squareSkeleton = SerializeToXml<Rectangle>.Deserialize(@"Learned\FullBody\1");
+            _loadedRectsBody = new List<Rectangle>(squareSkeleton);
+            DrawLoadedSkeletonSquareBody(squareSkeleton);
         }
 
         #endregion
@@ -213,10 +221,10 @@ namespace GestureRecognition.SquaresRecognizer
 
             foreach (var item in squareSkeleton)
             {
-                if (_rects.Contains(item))
+                if (_rects.Where(x=>x.X == item.X && x.Y == item.Y).Count() > 0)
                 {
-                    formGraphics.FillRectangle(Brushes.Red, item);
-                    var rect = new Rectangle(item.X, item.Y, _stepSize, _stepSize);
+                    formGraphics.FillRectangle(Brushes.Red, _rects.Where(x=>x.X == item.X && x.Y == item.Y).First());
+                    var rect = new Rectangle(item.X, item.Y, _stepSize, item.Height);
                     _selectedRects.Add(rect);
                 }
             }
@@ -227,7 +235,8 @@ namespace GestureRecognition.SquaresRecognizer
             System.Drawing.Graphics formGraphics = this.CreateGraphics();
             foreach (var item in bodyParts)
             {
-                formGraphics.FillRectangle(Brushes.Green, item);
+                var rect = new Rectangle(item.X, item.Y, item.Width, item.Width);
+                formGraphics.FillRectangle(Brushes.Green, rect);
             }
         }
 

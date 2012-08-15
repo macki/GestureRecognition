@@ -71,7 +71,6 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 }
             }
         }
-
         private void RemoveSquaresOnTheHand()
         {
             var mininumLeft = _bodyToRecognize.WholePattern.Min(x => x.X);
@@ -90,16 +89,11 @@ namespace GestureRecognition.SquaresRecognizer.Logic
 
             _bodyToRecognize.WholePattern = _Tors;
         }
-
-
         private void RemoveHeadElements()
         {
             var headRecognizer = new BodyPartSquaresRecognizer_Head(_bodyToRecognize.WholePattern, _bodyToRecognize.ProperPattern, this._TrainedItems.Where(x=>x.BodyPart == (int)Enums.BodyPart.Head).ToList());
             headRecognizer.RecognizeBodyPart().ToList().ForEach(x=>_bodyToRecognize.WholePattern.Remove(x));
         }
-
-       
-
         private void RemoveSquaresOnTheBottom(double avarageHeadHeight)
         {
             _bodyToRecognize.WholePattern.OrderBy(x => x.Y);
@@ -112,7 +106,6 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 }
             }
         }
-
         private void RemoveSquaresOnTheSides(double avarageHeadWidth)
         {
             for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)

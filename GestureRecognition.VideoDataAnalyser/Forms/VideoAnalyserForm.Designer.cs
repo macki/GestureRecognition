@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SquareNumberLabel = new System.Windows.Forms.Label();
             this.SaveSquaresButton = new System.Windows.Forms.Button();
+            this.OnlySquaresCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -61,11 +62,22 @@
             this.SaveSquaresButton.UseVisualStyleBackColor = true;
             this.SaveSquaresButton.Click += new System.EventHandler(this.SaveSquaresButton_OnClick);
             // 
+            // OnlySquaresCheckBox
+            // 
+            this.OnlySquaresCheckBox.AutoSize = true;
+            this.OnlySquaresCheckBox.Location = new System.Drawing.Point(16, 289);
+            this.OnlySquaresCheckBox.Name = "OnlySquaresCheckBox";
+            this.OnlySquaresCheckBox.Size = new System.Drawing.Size(89, 17);
+            this.OnlySquaresCheckBox.TabIndex = 3;
+            this.OnlySquaresCheckBox.Text = "Only Squares";
+            this.OnlySquaresCheckBox.UseVisualStyleBackColor = true;
+            // 
             // VideoAnalyserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(322, 338);
+            this.Controls.Add(this.OnlySquaresCheckBox);
             this.Controls.Add(this.SaveSquaresButton);
             this.Controls.Add(this.SquareNumberLabel);
             this.Controls.Add(this.label1);
@@ -81,5 +93,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label SquareNumberLabel;
         private System.Windows.Forms.Button SaveSquaresButton;
+        private System.Windows.Forms.CheckBox OnlySquaresCheckBox;
     }
 }

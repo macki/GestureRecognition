@@ -25,6 +25,9 @@ namespace GestureRecognition.BodyTracking
         private int _mostRightPartOfBody = 0;
         private int _coeficientOfRemovingDisortion = 20;
 
+        private double _avarageBodyDepth = 0;
+        private double _minZ = 9999;
+
         public void GetCurrentDepth(List<int> depthArray)
         {
             _depthArray = depthArray;
@@ -120,7 +123,9 @@ namespace GestureRecognition.BodyTracking
 
             int posY = -1;
             bool add = true;
-            int squareSize = 20;
+            int squareSize = 5;
+            int notZeroZCounter = 0;
+
             for (int i = 0; i < bodyDept.Count; i = i + squareSize)
             {
                 if (posY == -1)
@@ -134,7 +139,15 @@ namespace GestureRecognition.BodyTracking
                 {
                     if(add == true && ((int)bodyDept[i].Y == posY))
                     {
-                        _selectionSquares.Add(new Rectangle((int)bodyDept[i].X, (int)bodyDept[i].Y, squareSize, squareSize));
+                        // width = height [always square], height is used to store Z
+                        _selectionSquares.Add(new Rectangle((int)bodyDept[i].X, (int)bodyDept[i].Y, squareSize, (int)bodyDept[i].Z));
+                        _avarageBodyDepth += bodyDept[i].Z;
+                        notZeroZCounter++;
+
+                        if (bodyDept[i].Z < _minZ && bodyDept[i].Z != 0)
+                        {
+                            _minZ = bodyDept[i].Z;
+                        }
                     }
                 }
 
@@ -146,6 +159,7 @@ namespace GestureRecognition.BodyTracking
                 }
             }
 
+            _avarageBodyDepth = _avarageBodyDepth / notZeroZCounter;
             return bodyDept;
         }
 
@@ -153,7 +167,14 @@ namespace GestureRecognition.BodyTracking
         {
             return CalculateBodyCentroid();
         }
-
+        public double GetAvarageBodyDepth()
+        {
+            return _avarageBodyDepth;
+        }
+        public double GetMinimumZ()
+        {
+            return _minZ;
+        }
         private void RecalculatePosition(int i, ref int yPos)
         {
             if (i % _cameraWidth == 0 && i != 0)

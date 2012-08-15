@@ -28,7 +28,7 @@ namespace GestureRecognition.VideoDataAnalyser
         private int _accuracy = 0;
 
         private bool _playWithAutoSave = false;
-        
+        private int _squareSize = 20;
 
         #endregion
 
@@ -91,62 +91,48 @@ namespace GestureRecognition.VideoDataAnalyser
         private Bitmap GetBitmapFromDepth(List<Points> depthArray, List<Points> bodyArray, Bitmap orignalBitmap)
         {
             var bitmap = new Bitmap(320, 240);
-
-            int rowCounter = 0;
-            int columnCounter = 0;
             int rescaleRation = 320 * 240 / depthArray.Count;
 
-            //for (int i = 0; i < depthArray.Count; i++)
-            //{
-            //    for (int j = 0; j < rescaleRation; j++)
-            //    {
-            //        double color = (double)depthArray[i].Z / 10;
-            //        var pixel = Color.FromArgb(255, (byte)color, (byte)color, (byte)color);
-            //        bitmap.SetPixel((int)depthArray[i].X + j, (int)depthArray[i].Y, pixel);
-            //    }
-            //    rowCounter++;
-            //}
-
-            
-
-            var pixel2 = Color.FromArgb(255, 255, 100, 100);
-
-            for (int i = 0; i < 240; i++)
+            // Draw depth 
+            if (!_videoAnalyserForm.IsOnlySquare())
             {
-                for (int j = 0; j < 320; j++)
+                for (int i = 0; i < bodyArray.Count; i++)
+                {
+                    double color = (double)bodyArray[i].Z / 10;
+                    var pixel = Color.FromArgb(255, (byte)color, (byte)color, (byte)color);
+                    bitmap.SetPixel((int)bodyArray[i].X, (int)bodyArray[i].Y, pixel);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < bodyArray.Count; i++)
                 {
                     var pixel = Color.FromArgb(255, 0, 0, 0);
-                    bitmap.SetPixel(j, i, pixel);
+                    bitmap.SetPixel((int)bodyArray[i].X, (int)bodyArray[i].Y, pixel);
                 }
             }
 
-            for (int i = 0; i < bodyArray.Count; i++)
-            {
-                double color = (double)bodyArray[i].Z / 10;
-                var pixel = Color.FromArgb(255, (byte)color, (byte)color, (byte)color);
-                bitmap.SetPixel((int)bodyArray[i].X, (int)bodyArray[i].Y, pixel);
-            }
-
-            var tt = MathHelper.CalculateCentroidBody(bodyArray);
-
-            for (int i = 0; i < 10; i++)
-            {
-                bitmap.SetPixel((int)tt.X + i, (int)tt.Y + i, pixel2);
-            }
-
-            // red squayre
+            // Draw red square
             for (int i = 0; i <  _trackingSystem._selectionSquares.Count; i = i + 1)
             {
-                for (int j = 0; j < 20; j++)
+                var pixel2 = Color.FromArgb(255, (int)(((int)_trackingSystem._selectionSquares[i].Height) / 10), 100, 100);
+
+                if ((int)_trackingSystem._selectionSquares[i].Height < _trackingSystem.GetMinimumZ() + 150)
+                {
+                    pixel2 = Color.FromArgb(255, 255, 100, 100);
+                }
+
+
+                for (int j = 0; j < _squareSize; j++)
                 {
                     if ((int)_trackingSystem._selectionSquares[i].X + j < 320 && (int)_trackingSystem._selectionSquares[i].Y + j < 240)
                     {
                         try
                         {
                             bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + j, (int)_trackingSystem._selectionSquares[i].Y, pixel2);
-                            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + +20, (int)_trackingSystem._selectionSquares[i].Y + j, pixel2);
+                            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + +_squareSize, (int)_trackingSystem._selectionSquares[i].Y + j, pixel2);
                             bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + 0, (int)_trackingSystem._selectionSquares[i].Y + j, pixel2);
-                            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + j, (int)_trackingSystem._selectionSquares[i].Y + 20, pixel2);
+                            bitmap.SetPixel((int)_trackingSystem._selectionSquares[i].X + j, (int)_trackingSystem._selectionSquares[i].Y + _squareSize, pixel2);
                         }
                         catch (Exception e) { }
                     }

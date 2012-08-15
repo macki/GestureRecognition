@@ -29,6 +29,11 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
             ThreadSafeFunction(value);
         }
 
+        public bool IsOnlySquare()
+        {
+            return OnlySquaresCheckBox.Checked;
+        }
+
 
         private void ThreadSafeFunction(string value)
         {

@@ -79,7 +79,9 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                case Enums.BodyPart.Torso:
                    var torsRecognizer = new BodyPartSquaresRecognizer_Tors(wholeBodyToRecognize, selectedPattern, _trainedItems);
                    return torsRecognizer.RecognizeBodyPart();
-
+               case Enums.BodyPart.Hands:
+                   var handsRecognizer = new BodyPartSquaresRecognizer_Hands(wholeBodyToRecognize, selectedPattern, _trainedItems);
+                   return handsRecognizer.RecognizeBodyPart();
            }
 
            return null;
