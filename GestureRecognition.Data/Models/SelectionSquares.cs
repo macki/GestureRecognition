@@ -68,6 +68,36 @@ namespace GestureRecognition.Data.Models
             return ComparisonVector;
         }
 
+        public void CalculateFullBodyCentroid()
+        {
+            FullBodyCentroid = RectanglesUtil.GetCentroid(WholePattern);
+        }
+        public void CalculatePatternCentroid()
+        {
+            PatternCentroid = RectanglesUtil.GetCentroid(ProperPattern);
+        }
+        public List<int> MaximaPointXYZ()
+        {
+            int minX = int.MaxValue;
+            int maxX = int.MinValue;
+            int minY = int.MaxValue;
+            int maxY = int.MinValue;
+            int minZ = int.MaxValue;
+            int maxZ = int.MinValue;
+
+            for (int i = 0; i < WholePattern.Count; i++)
+            {
+                if (WholePattern[i].X < minX) { minX = WholePattern[i].X; }
+                if (WholePattern[i].Y < minY) { minY = WholePattern[i].Y; }
+                if (WholePattern[i].Height < minZ) { minZ = WholePattern[i].Height; }
+
+                if (WholePattern[i].X > maxX) { maxX = WholePattern[i].X; }
+                if (WholePattern[i].Y > maxY) { maxY = WholePattern[i].Y; }
+                if (WholePattern[i].Height > maxZ) { maxZ = WholePattern[i].Height; }
+            }
+
+            return new List<int>() { minX, maxX, minY, maxY, minZ, maxZ };
+        }
         private void CalculateBodyRatio()
         {
            BodyRatio =  (double)ProperPattern.Count / (double)WholePattern.Count;
@@ -85,14 +115,6 @@ namespace GestureRecognition.Data.Models
             int maxWidth = ProperPattern.Max(x => x.Y);
 
             PatternHeight = maxWidth - minWidth;
-        }
-        public void CalculateFullBodyCentroid()
-        {
-            FullBodyCentroid = RectanglesUtil.GetCentroid(WholePattern);
-        }
-        private void CalculatePatternCentroid()
-        {
-            PatternCentroid = RectanglesUtil.GetCentroid(ProperPattern);
         }
         private void DiffBodyRatio(ref SelectionSquares newBody, List<double> ComparisonVector)
         {
@@ -116,5 +138,6 @@ namespace GestureRecognition.Data.Models
             var dif = Math.Abs((newBody.PatternHeight - this.PatternHeight));
             ComparisonVector.Add(dif);
         }
+
     }
 }

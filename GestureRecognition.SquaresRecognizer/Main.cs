@@ -93,28 +93,53 @@ namespace GestureRecognition.SquaresRecognizer
                         {
                             if (_isActiveSelecting)
                             {
-                                formGraphics.FillRectangle(Brushes.Red, _rects[i]);
-                                var rect = new Rectangle(_rects[i].X, _rects[i].Y, _stepSize, _stepSize);
-                                _selectedRects.Add(rect);
+                                DrawPointedArea(Brushes.Red, _rects[i]);
                                 break;
                             }
                             else
                             {
-                                formGraphics.FillRectangle(Brushes.Blue, _rects[i]);
-                                var rect = new Rectangle(_rects[i].X, _rects[i].Y, _stepSize, _stepSize);
-                                _selectedRectsPattern.Add(rect);
-                                _selectedRects.Add(rect);
+                                DrawPointedArea(Brushes.Blue, _rects[i]);
                             }
                         }
                     }
-
                 }
             }
 
             //set other propertiies
             SquareCounter.Text = (_selectedRects.Count).ToString();
         }
+        private void DrawPointedArea(Brush brush, Rectangle rect)
+        {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+            int sizeOfPointer = 1;
+            int.TryParse(PointingSizeTextBox.Text, out sizeOfPointer);
 
+            for (int i = 0; i < sizeOfPointer; i++)
+            {
+                for (int j = 0; j < sizeOfPointer; j++)
+                {
+                    var newRect = new Rectangle(rect.X + i * _stepSize , rect.Y + j * _stepSize, _stepSize, _stepSize);
+                    formGraphics.FillRectangle(brush, newRect);
+
+                    if (_isActiveSelecting)
+                    {
+                        if (!_selectedRects.Contains(newRect))
+                        {
+                                
+                            _selectedRects.Add(newRect);
+                        }
+                    }
+                    else
+                    {
+                        if( !_selectedRectsPattern.Contains(newRect))
+                        {
+                            _selectedRectsPattern.Add(newRect);
+                        }
+                    }
+                }
+            }
+        }
+        
         private void ActivePatternColor_Paint(object sender, EventArgs e)
         {
             _isActiveSelecting = true;
@@ -180,32 +205,32 @@ namespace GestureRecognition.SquaresRecognizer
         private void RecognizeHead_Click(object sender, EventArgs e)
         {
             var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Head);
-            DrawRecognizeBodyPart(recognizeArea.ToList());
+            DrawRecognizeBodyPart(recognizeArea.ToList(), Brushes.Green);
         }
         private void TorsButtonRecognize_Onclick(object sender, EventArgs e)
         {
             var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Torso);
-            DrawRecognizeBodyPart(recognizeArea.ToList());
+            DrawRecognizeBodyPart(recognizeArea.ToList(), Brushes.Blue);
         }
         private void HandsButtonRecognize_Onclic(object sender, EventArgs e)
         {
             var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Hands);
-            DrawRecognizeBodyPart(recognizeArea.ToList());
+            DrawRecognizeBodyPart(recognizeArea.ToList(), Brushes.Yellow);
         }
         private void LeftHand_ButtonRecognize_Onclic(object sender, EventArgs e)
         {
             var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.LeftHand);
-            DrawRecognizeBodyPart(recognizeArea.ToList());
+            DrawRecognizeBodyPart(recognizeArea.ToList(), Brushes.Orange);
         }
         private void RightHand_ButtonRecognize_Onclic(object sender, EventArgs e)
         {
             var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.RightHand);
-            DrawRecognizeBodyPart(recognizeArea.ToList());
+            DrawRecognizeBodyPart(recognizeArea.ToList(), Brushes.Pink);
         }
         private void Legs_ButtonRecognize_Onclic(object sender, EventArgs e)
         {
             var recognizeArea = _sqauresRecognizer.Recognize(_selectedRects, _selectedRectsPattern, Data.Enums.BodyPart.Legs);
-            DrawRecognizeBodyPart(recognizeArea.ToList());
+            DrawRecognizeBodyPart(recognizeArea.ToList(), Brushes.Violet);
         }
 
         #endregion
@@ -230,13 +255,13 @@ namespace GestureRecognition.SquaresRecognizer
             }
         }
 
-        private void DrawRecognizeBodyPart(List<Rectangle> bodyParts)
+        private void DrawRecognizeBodyPart(List<Rectangle> bodyParts, Brush brush)
         {
             System.Drawing.Graphics formGraphics = this.CreateGraphics();
             foreach (var item in bodyParts)
             {
                 var rect = new Rectangle(item.X, item.Y, item.Width, item.Width);
-                formGraphics.FillRectangle(Brushes.Green, rect);
+                formGraphics.FillRectangle(brush, rect);
             }
         }
 

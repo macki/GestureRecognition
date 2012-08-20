@@ -55,6 +55,8 @@
             this.LeftHandButtonRecognize = new System.Windows.Forms.Button();
             this.HandsButtonRecognize = new System.Windows.Forms.Button();
             this.TorsButtonRecognize = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.PointingSizeTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -316,12 +318,30 @@
             this.TorsButtonRecognize.UseVisualStyleBackColor = true;
             this.TorsButtonRecognize.Click += new System.EventHandler(this.TorsButtonRecognize_Onclick);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(542, 268);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 13);
+            this.label7.TabIndex = 27;
+            this.label7.Text = "Pointing Size";
+            // 
+            // PointingSizeTextBox
+            // 
+            this.PointingSizeTextBox.Location = new System.Drawing.Point(545, 285);
+            this.PointingSizeTextBox.Name = "PointingSizeTextBox";
+            this.PointingSizeTextBox.Size = new System.Drawing.Size(65, 20);
+            this.PointingSizeTextBox.TabIndex = 28;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(624, 453);
+            this.Controls.Add(this.PointingSizeTextBox);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.LegsButtonRecognize);
             this.Controls.Add(this.RightHandButtonRecognize);
             this.Controls.Add(this.LeftHandButtonRecognize);
@@ -386,6 +406,8 @@
         private System.Windows.Forms.Button LeftHandButtonRecognize;
         private System.Windows.Forms.Button HandsButtonRecognize;
         private System.Windows.Forms.Button TorsButtonRecognize;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox PointingSizeTextBox;
 
 
     }

@@ -82,6 +82,16 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                case Enums.BodyPart.Hands:
                    var handsRecognizer = new BodyPartSquaresRecognizer_Hands(wholeBodyToRecognize, selectedPattern, _trainedItems);
                    return handsRecognizer.RecognizeBodyPart();
+               case Enums.BodyPart.Legs:
+                   var legs = new BodyPartSquaresRecognizer_Legs(wholeBodyToRecognize, selectedPattern, _trainedItems);
+                   return legs.RecognizeBodyPart();
+               case Enums.BodyPart.LeftHand:
+                   var LeftHand= new BodyPartSquaresRecognizer_LeftHand(wholeBodyToRecognize, selectedPattern, _trainedItems);
+                   return LeftHand.RecognizeBodyPart();
+               case Enums.BodyPart.RightHand:
+                   var rightHand = new BodyPartSquaresRecognizer_RightHand(wholeBodyToRecognize, selectedPattern, _trainedItems);
+                   return rightHand.RecognizeBodyPart();
+
            }
 
            return null;

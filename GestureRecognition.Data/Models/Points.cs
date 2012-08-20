@@ -24,6 +24,15 @@ namespace GestureRecognition.Data.Models
 
         }
 
+        public Points(double x, double y, double z)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+            this.MSecTime = 0;
+        }
+
+
         public Points(double x, double y, double z,long msc)
         {
             this.X = x;
