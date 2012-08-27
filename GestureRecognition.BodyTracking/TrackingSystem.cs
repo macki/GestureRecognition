@@ -82,9 +82,6 @@ namespace GestureRecognition.BodyTracking
             // Remove not proper body squares and get maximas
             RemoveNotProperBodySquares();
 
-            // Searching Body Path
-            SearchingBodyPath();
-
             return bodyDepth;
         }
 
@@ -168,14 +165,6 @@ namespace GestureRecognition.BodyTracking
             _center.X = (int)(_center.X / _selectionSquares.Count());
             _center.Y = (int)(_center.Y / _selectionSquares.Count());
         }
-        private void SearchingBodyPath()
-        {
-            for (int i = 0; i >= _selectionSquares.Count; i++)
-            {
-
-
-            }
-        }
         private void ResetMaximaPoint()
         {
             _minZ = new Rectangle(0, 0, 0 , int.MaxValue);
@@ -201,7 +190,11 @@ namespace GestureRecognition.BodyTracking
         }
         public double GetMinimumZ()
         {
-            return _minZ.Height;
+            return _minDepth;
+        }
+        public double GetMaxZ()
+        {
+            return _maxDepth;
         }
         private void RecalculatePosition(int i, ref int yPos)
         {

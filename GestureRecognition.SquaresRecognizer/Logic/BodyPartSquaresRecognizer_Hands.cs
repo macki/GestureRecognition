@@ -9,9 +9,8 @@ using System.Drawing;
 
 namespace GestureRecognition.SquaresRecognizer.Logic
 {
-    public class BodyPartSquaresRecognizer_Hands : IBodyRecognizer
+    public class BodyPartSquaresRecognizer_Hands : BodyPartSquaresRecognizer,  IBodyRecognizer
     {
-        private SelectionSquares _bodyToRecognize;
         private List<SelectionSquares> _TrainedItems;
         private List<Rectangle> _Hands;
         private List<Rectangle> _Head;
@@ -143,9 +142,9 @@ namespace GestureRecognition.SquaresRecognizer.Logic
 
             for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
             {
-                if (headRecognizer.HeadCentroid.Y + headRecognizer.AvarageHeadHeight / 2 > _bodyToRecognize.WholePattern[i].Y)
+                if (headRecognizer._HeadCentroid.Y + headRecognizer.AvarageHeadHeight / 2 > _bodyToRecognize.WholePattern[i].Y)
                 {
-                    if (Math.Abs(_bodyToRecognize.WholePattern[i].X - headRecognizer.HeadCentroid.X) <= headRecognizer.AvarageHeadWidth / 2 * 3)
+                    if (Math.Abs(_bodyToRecognize.WholePattern[i].X - headRecognizer._HeadCentroid.X) <= headRecognizer.AvarageHeadWidth / 2 * 3)
                     {
                         _Head.Add(_bodyToRecognize.WholePattern[i]);
                     }

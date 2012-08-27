@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Threading;
 using GestureRecognition.Data.Models;
 using GestureRecognition.Data.DataSerialization;
+using GestureRecognition.SquaresRecognizer.Logic;
 
 namespace GestureRecognition.SquaresRecognizer
 {
@@ -24,6 +25,7 @@ namespace GestureRecognition.SquaresRecognizer
         private int _stepSize = 0;
 
         private bool _isActiveSelecting = true;
+        private bool _isSearchingPathMode = false;
 
         #region Constructors
         
@@ -35,7 +37,7 @@ namespace GestureRecognition.SquaresRecognizer
 
         private void LoadBasicFullBody()
         {
-            var squareSkeleton = SerializeToXml<Rectangle>.Deserialize(@"Learned\FullBody\1");
+            var squareSkeleton = SerializeToXml<Rectangle>.Deserialize(@"Learned\FullBody\devel01-K22\1");
             _loadedRectsBody = new List<Rectangle>(squareSkeleton);
             DrawLoadedSkeletonSquareBody(squareSkeleton);
         }
@@ -91,14 +93,22 @@ namespace GestureRecognition.SquaresRecognizer
                         }
                         else
                         {
-                            if (_isActiveSelecting)
+                            if (!_isSearchingPathMode)
                             {
-                                DrawPointedArea(Brushes.Red, _rects[i]);
-                                break;
+
+                                if (_isActiveSelecting)
+                                {
+                                    DrawPointedArea(Brushes.Red, _rects[i]);
+                                    break;
+                                }
+                                else
+                                {
+                                    DrawPointedArea(Brushes.Blue, _rects[i]);
+                                }
                             }
                             else
                             {
-                                DrawPointedArea(Brushes.Blue, _rects[i]);
+                                DrawPointedArea(Brushes.Green, _rects[i]);
                             }
                         }
                     }
@@ -118,23 +128,38 @@ namespace GestureRecognition.SquaresRecognizer
             {
                 for (int j = 0; j < sizeOfPointer; j++)
                 {
-                    var newRect = new Rectangle(rect.X + i * _stepSize , rect.Y + j * _stepSize, _stepSize, _stepSize);
+                    var newRect = new Rectangle(rect.X + i * _stepSize , rect.Y + j * _stepSize, _stepSize,rect.Height);
                     formGraphics.FillRectangle(brush, newRect);
 
-                    if (_isActiveSelecting)
+                    foreach (var item in _selectedRects)
                     {
-                        if (!_selectedRects.Contains(newRect))
+                        if (item.X == newRect.X && item.Y == newRect.Y)
                         {
-                                
-                            _selectedRects.Add(newRect);
+                            newRect.Height = item.Height;
+                        }
+                    }
+
+                    if (!_isSearchingPathMode)
+                    {
+                        if (_isActiveSelecting)
+                        {
+                            if (!_selectedRects.Contains(newRect))
+                            {
+
+                                _selectedRects.Add(newRect);
+                            }
+                        }
+                        else
+                        {
+                            if (!_selectedRectsPattern.Contains(newRect))
+                            {
+                                _selectedRectsPattern.Add(newRect);
+                            }
                         }
                     }
                     else
                     {
-                        if( !_selectedRectsPattern.Contains(newRect))
-                        {
-                            _selectedRectsPattern.Add(newRect);
-                        }
+                        _selectedRectsPattern.Add(newRect);
                     }
                 }
             }
@@ -143,10 +168,12 @@ namespace GestureRecognition.SquaresRecognizer
         private void ActivePatternColor_Paint(object sender, EventArgs e)
         {
             _isActiveSelecting = true;
+            _isSearchingPathMode = false;
         }
         private void ActivePatternToLearnColor_Paint(object sender, EventArgs e)
         {
             _isActiveSelecting = false;
+            _isSearchingPathMode = false;
         }
 
         private void ResetGribds_OnClick(object sender, MouseEventArgs e)
@@ -235,6 +262,37 @@ namespace GestureRecognition.SquaresRecognizer
 
         #endregion
 
+        #region Events Find Path
+
+        private void FindNextPathButton_OnClick(object sender, EventArgs e)
+        {
+            var rects = new List<Rectangle>();
+            for (int i = 0; i < _selectedRects.Count; i++)
+            {
+                var choosePoint = _selectedRectsPattern.ElementAt(0);
+
+                if (Math.Abs(choosePoint.Height - _selectedRects[i].Height) < Int16.Parse(DepthVariationTextBox.Text))
+                {
+                    rects.Add(_selectedRects[i]);
+                }
+            }
+
+            DrawRecognizeBodyPart(rects, Brushes.Brown);
+
+            var boRec = new BodyPartSquaresRecognizer();
+            var rects2 = boRec.GeRegionWithTheSameDepthVariation(_selectedRects, _selectedRectsPattern.ElementAt(0), int.Parse(DepthVariationTextBox.Text),int.Parse(SizeTextBox.Text));
+
+            DrawRecognizeBodyPart(rects2, Brushes.Red);
+        }
+
+        private void PathPointPicker_OnClick(object sender, EventArgs e)
+        {
+            _isSearchingPathMode = true;
+        }
+
+
+        #endregion
+
         #region Methods
 
         private void DrawLoadedSkeletonSquareBody(List<Rectangle> squareSkeleton)
@@ -248,7 +306,9 @@ namespace GestureRecognition.SquaresRecognizer
             {
                 if (_rects.Where(x=>x.X == item.X && x.Y == item.Y).Count() > 0)
                 {
-                    formGraphics.FillRectangle(Brushes.Red, _rects.Where(x=>x.X == item.X && x.Y == item.Y).First());
+                    var brush = new SolidBrush(Color.FromArgb(255,100 +  item.Height/15,100,100));
+
+                    formGraphics.FillRectangle(brush, _rects.Where(x => x.X == item.X && x.Y == item.Y).First());
                     var rect = new Rectangle(item.X, item.Y, _stepSize, item.Height);
                     _selectedRects.Add(rect);
                 }
@@ -290,10 +350,12 @@ namespace GestureRecognition.SquaresRecognizer
 
         private void SetScoreLabel(double score)
         {
-            ScoreLabel.Text = score.ToString();
+            //ScoreLabel.Text = score.ToString();
         }
 
         #endregion
+
+
 
     }
 }

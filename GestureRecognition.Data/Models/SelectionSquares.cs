@@ -98,6 +98,15 @@ namespace GestureRecognition.Data.Models
 
             return new List<int>() { minX, maxX, minY, maxY, minZ, maxZ };
         }
+        public double AvarageBodyDepth()
+        {
+            int av = 0;
+            foreach (var item in WholePattern)
+            {
+                av += item.Height;
+            }
+            return av / WholePattern.Count;
+        }
         private void CalculateBodyRatio()
         {
            BodyRatio =  (double)ProperPattern.Count / (double)WholePattern.Count;

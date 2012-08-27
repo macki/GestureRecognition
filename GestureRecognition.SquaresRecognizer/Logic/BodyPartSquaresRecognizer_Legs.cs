@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace GestureRecognition.SquaresRecognizer.Logic
 {
-    public class BodyPartSquaresRecognizer_Legs : IBodyRecognizer
+    public class BodyPartSquaresRecognizer_Legs : BodyPartSquaresRecognizer, IBodyRecognizer
     {
         private SelectionSquares _bodyToRecognize;
         private List<SelectionSquares> _TrainedItems;

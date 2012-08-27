@@ -9,14 +9,15 @@ using System.Drawing;
 
 namespace GestureRecognition.SquaresRecognizer.Logic
 {
-    public class BodyPartSquaresRecognizer_RightHand : IBodyRecognizer
+    public class BodyPartSquaresRecognizer_RightHand : BodyPartSquaresRecognizer, IBodyRecognizer
     {
-        private SelectionSquares _bodyToRecognize;
+        public Rectangle _LeftHandProperCenterPoint;
         private List<SelectionSquares> _TrainedItems;
         private List<Rectangle> _Hands;
         private List<Rectangle> _Head;
         private List<Rectangle> _Tors;
         private List<Rectangle> _BottomTors;
+        private List<Rectangle> _BasicListWholePattern = new List<Rectangle>();
 
         private Point _recognizePatternCentroid = new Point(0, 0);
         private int _recognizePatternWidth = 0;
@@ -27,6 +28,7 @@ namespace GestureRecognition.SquaresRecognizer.Logic
             this._bodyToRecognize = new SelectionSquares() {WholePattern = new List<Rectangle>(bodyToRecognize), ProperPattern = selectedPattern, BodyPart = (int)Enums.BodyPart.Hands};
             this._TrainedItems = _trainedItems;
 
+            _BasicListWholePattern.AddRange(bodyToRecognize);
             _Hands = new List<Rectangle>();
             _Head = new List<Rectangle>();
             _Tors = new List<Rectangle>();
@@ -41,13 +43,14 @@ namespace GestureRecognition.SquaresRecognizer.Logic
         public IEnumerable<Rectangle> RecognizeBodyPart()
         {
             _bodyToRecognize.CalculateFullBodyCentroid();
-           
+
             double avarageHeadWidth = 0;
             double avarageHeadHeight = 0;
             double avarageBodyRatio = 0;
             double avarageBodyElement = 0;
             Point bodyPartCentroid = new Point(0, 0);
-            foreach (var item in _TrainedItems.Where(x => x.BodyPart == (int)Enums.BodyPart.RightHand).ToList())
+            var rightHandsPattern = _TrainedItems.Where(x => x.BodyPart == (int)Enums.BodyPart.RightHand).ToList();
+            foreach (var item in rightHandsPattern)
             {
                 avarageHeadWidth += item.PatternWidth;
                 avarageBodyRatio += item.BodyRatio;
@@ -74,22 +77,89 @@ namespace GestureRecognition.SquaresRecognizer.Logic
             _recognizePatternHeight = _bodyToRecognize.MaximaPointXYZ().ElementAt(3) - _bodyToRecognize.MaximaPointXYZ().ElementAt(2);
 
             // 4 - Removing not propers hands part
-            RemovingNotProperPartOfHand();
+            //RemovingNotProperPartOfHand(avarageHeadWidth / rightHandsPattern.Count);
+
+            // 5 - Add Body Parts which were placed on the left from centroid
+            AddLeftCentroidBodyPart();
+
+            //
+            RemoveOneTwoSquaresPart();
+
+            // Calculate proper left hand center part
+            CalculateProperCenter();
 
             return _bodyToRecognize.WholePattern; 
         }
 
-        private void RemovingNotProperPartOfHand()
+        private void CalculateProperCenter()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void RemoveOneTwoSquaresPart()
+        {
+            int counter = 0;
+            bool oneCheck = false;
+            int currentY = _bodyToRecognize.WholePattern[0].Y;
+            for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
+            {
+                if (currentY != _bodyToRecognize.WholePattern[i].Y)
+                {
+                    if (counter < 3)
+                    {
+                        currentY = _bodyToRecognize.WholePattern[i].Y;
+                        if (i < _bodyToRecognize.WholePattern.Count - 4)
+                        {
+                            _bodyToRecognize.WholePattern.RemoveAt(i + 3);
+                            _bodyToRecognize.WholePattern.RemoveAt(i + 2);
+                            _bodyToRecognize.WholePattern.RemoveAt(i + 1);
+                        }
+                        counter = 0;
+                    }
+                }
+                else
+                {
+                    counter++;
+                }
+            }
+        }
+
+        private void AddLeftCentroidBodyPart()
+        {
+            var foundRects = new List<Rectangle>();
+            for (int i = 0; i < _bodyToRecognize.WholePattern.Count; i++)
+            {
+                foundRects.AddRange(GeRegionWithTheSameDepthVariation(_BasicListWholePattern, _bodyToRecognize.WholePattern[i], 120, 10));
+            }
+
+            foreach (var item in foundRects)
+            {
+                if (!_bodyToRecognize.WholePattern.Contains(item))
+                {
+                    _bodyToRecognize.WholePattern.Add(item);
+                }
+            }
+
+            _bodyToRecognize.WholePattern.AddRange(foundRects);
+        }
+
+        private void RemovingNotProperPartOfHand(double bodyElementWidth)
         {
             for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
             {
                 if (_recognizePatternWidth < _recognizePatternHeight)
                 {
                     double axisRation = _recognizePatternHeight / _recognizePatternWidth;
-                    if (_bodyToRecognize.WholePattern[i].X > _recognizePatternCentroid.X && _bodyToRecognize.WholePattern[i].Y > _recognizePatternCentroid.Y)
+                    if (_bodyToRecognize.WholePattern[i].X < _recognizePatternCentroid.X && _bodyToRecognize.WholePattern[i].Y > _recognizePatternCentroid.Y)
                     {
                         _bodyToRecognize.WholePattern.RemoveAt(i);
+                        continue;
                     }
+                }
+                // remove to far squres
+                if (Math.Abs(_bodyToRecognize.WholePattern[i].X - _recognizePatternCentroid.X) > bodyElementWidth)
+                {
+                    _bodyToRecognize.WholePattern.RemoveAt(i);
                 }
             }
         }
@@ -166,7 +236,6 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 }
             }
         }
-
         private void GetBottomTorso()
         {
             var minTorso = _Tors.Min(x=>x.X);
@@ -189,13 +258,14 @@ namespace GestureRecognition.SquaresRecognizer.Logic
         void GetHeadElements()
         {
             var headRecognizer = new BodyPartSquaresRecognizer_Head(_bodyToRecognize.WholePattern, _bodyToRecognize.ProperPattern, this._TrainedItems.Where(x => x.BodyPart == (int)Enums.BodyPart.Head).ToList());
-            _Head.AddRange(headRecognizer.RecognizeBodyPart());
+            headRecognizer.RecognizeBodyPart();
+            _Head.AddRange(headRecognizer._HeadWithDepthAnalyzing);
 
             for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
             {
-                if (headRecognizer.HeadCentroid.Y + headRecognizer.AvarageHeadHeight / 2 > _bodyToRecognize.WholePattern[i].Y)
+                if (headRecognizer._HeadCentroid.Y + headRecognizer.AvarageHeadHeight / 2 > _bodyToRecognize.WholePattern[i].Y)
                 {
-                    if (Math.Abs(_bodyToRecognize.WholePattern[i].X - headRecognizer.HeadCentroid.X) <= headRecognizer.AvarageHeadWidth / 2 * 3)
+                    if (Math.Abs(_bodyToRecognize.WholePattern[i].X - headRecognizer._HeadCentroid.X) <= headRecognizer.AvarageHeadWidth / 2 * 3)
                     {
                         _Head.Add(_bodyToRecognize.WholePattern[i]);
                     }
@@ -205,7 +275,8 @@ namespace GestureRecognition.SquaresRecognizer.Logic
         void GetTorsoElements()
         {
             var headRecognizer = new BodyPartSquaresRecognizer_Tors(_bodyToRecognize.WholePattern, _bodyToRecognize.ProperPattern, _TrainedItems);
-            _Tors.AddRange(headRecognizer.RecognizeBodyPart());
+            headRecognizer.RecognizeBodyPart();
+            _Tors.AddRange(headRecognizer._TorsWithDepthAnalyzing);
         }
     }
 }

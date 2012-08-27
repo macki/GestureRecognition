@@ -44,7 +44,6 @@
             this.LoadSkeletonButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.ResetGridsButton = new System.Windows.Forms.Button();
-            this.ScoreLabel = new System.Windows.Forms.Label();
             this.TorsLearnButton = new System.Windows.Forms.Button();
             this.HandsLearnButton = new System.Windows.Forms.Button();
             this.LeftHandLearnButton = new System.Windows.Forms.Button();
@@ -57,6 +56,16 @@
             this.TorsButtonRecognize = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.PointingSizeTextBox = new System.Windows.Forms.TextBox();
+            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.DepthVariationTextBox = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.FindNextPathButton = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.SizeTextBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -207,17 +216,6 @@
             this.ResetGridsButton.UseVisualStyleBackColor = true;
             this.ResetGridsButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ResetGribds_OnClick);
             // 
-            // ScoreLabel
-            // 
-            this.ScoreLabel.AutoSize = true;
-            this.ScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ScoreLabel.ForeColor = System.Drawing.Color.Red;
-            this.ScoreLabel.Location = new System.Drawing.Point(567, 424);
-            this.ScoreLabel.Name = "ScoreLabel";
-            this.ScoreLabel.Size = new System.Drawing.Size(48, 18);
-            this.ScoreLabel.TabIndex = 16;
-            this.ScoreLabel.Text = "Score";
-            // 
             // TorsLearnButton
             // 
             this.TorsLearnButton.Location = new System.Drawing.Point(84, 343);
@@ -333,13 +331,112 @@
             this.PointingSizeTextBox.Name = "PointingSizeTextBox";
             this.PointingSizeTextBox.Size = new System.Drawing.Size(65, 20);
             this.PointingSizeTextBox.TabIndex = 28;
+            this.PointingSizeTextBox.Text = "1";
+            // 
+            // shapeContainer1
+            // 
+            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer1.Name = "shapeContainer1";
+            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.lineShape1});
+            this.shapeContainer1.Size = new System.Drawing.Size(818, 458);
+            this.shapeContainer1.TabIndex = 29;
+            this.shapeContainer1.TabStop = false;
+            // 
+            // lineShape1
+            // 
+            this.lineShape1.Name = "lineShape1";
+            this.lineShape1.X1 = 648;
+            this.lineShape1.X2 = 645;
+            this.lineShape1.Y1 = 14;
+            this.lineShape1.Y2 = 363;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Lime;
+            this.panel1.Location = new System.Drawing.Point(661, 14);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(22, 22);
+            this.panel1.TabIndex = 30;
+            this.panel1.Click += new System.EventHandler(this.PathPointPicker_OnClick);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(699, 17);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(70, 13);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "Choose Point";
+            // 
+            // DepthVariationTextBox
+            // 
+            this.DepthVariationTextBox.Location = new System.Drawing.Point(661, 59);
+            this.DepthVariationTextBox.Name = "DepthVariationTextBox";
+            this.DepthVariationTextBox.Size = new System.Drawing.Size(49, 20);
+            this.DepthVariationTextBox.TabIndex = 32;
+            this.DepthVariationTextBox.Text = "10";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(659, 82);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(80, 13);
+            this.label9.TabIndex = 33;
+            this.label9.Text = "Depth Variation";
+            // 
+            // FindNextPathButton
+            // 
+            this.FindNextPathButton.Location = new System.Drawing.Point(653, 99);
+            this.FindNextPathButton.Name = "FindNextPathButton";
+            this.FindNextPathButton.Size = new System.Drawing.Size(162, 23);
+            this.FindNextPathButton.TabIndex = 34;
+            this.FindNextPathButton.Text = "Next Step";
+            this.FindNextPathButton.UseVisualStyleBackColor = true;
+            this.FindNextPathButton.Click += new System.EventHandler(this.FindNextPathButton_OnClick);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(659, 135);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(129, 13);
+            this.label10.TabIndex = 35;
+            this.label10.Text = "Go Into Min Depth always";
+            // 
+            // SizeTextBox
+            // 
+            this.SizeTextBox.Location = new System.Drawing.Point(758, 59);
+            this.SizeTextBox.Name = "SizeTextBox";
+            this.SizeTextBox.Size = new System.Drawing.Size(48, 20);
+            this.SizeTextBox.TabIndex = 36;
+            this.SizeTextBox.Text = "10";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(761, 82);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(27, 13);
+            this.label11.TabIndex = 37;
+            this.label11.Text = "Size";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(624, 453);
+            this.ClientSize = new System.Drawing.Size(818, 458);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.SizeTextBox);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.FindNextPathButton);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.DepthVariationTextBox);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.PointingSizeTextBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.LegsButtonRecognize);
@@ -352,7 +449,6 @@
             this.Controls.Add(this.LeftHandLearnButton);
             this.Controls.Add(this.HandsLearnButton);
             this.Controls.Add(this.TorsLearnButton);
-            this.Controls.Add(this.ScoreLabel);
             this.Controls.Add(this.ResetGridsButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.LoadSkeletonButton);
@@ -369,6 +465,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SquareSizeTextBox);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.shapeContainer1);
             this.Name = "Main";
             this.Text = "Main";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Main_MouseDown);
@@ -395,7 +492,6 @@
         private System.Windows.Forms.Button LoadSkeletonButton;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button ResetGridsButton;
-        private System.Windows.Forms.Label ScoreLabel;
         private System.Windows.Forms.Button TorsLearnButton;
         private System.Windows.Forms.Button HandsLearnButton;
         private System.Windows.Forms.Button LeftHandLearnButton;
@@ -408,6 +504,16 @@
         private System.Windows.Forms.Button TorsButtonRecognize;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox PointingSizeTextBox;
+        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox DepthVariationTextBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button FindNextPathButton;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox SizeTextBox;
+        private System.Windows.Forms.Label label11;
 
 
     }

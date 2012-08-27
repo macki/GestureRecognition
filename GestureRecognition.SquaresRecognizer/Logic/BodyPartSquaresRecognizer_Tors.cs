@@ -9,11 +9,13 @@ using System.Drawing;
 
 namespace GestureRecognition.SquaresRecognizer.Logic
 {
-    public class BodyPartSquaresRecognizer_Tors : IBodyRecognizer
+    public class BodyPartSquaresRecognizer_Tors : BodyPartSquaresRecognizer, IBodyRecognizer
     {
-        private SelectionSquares _bodyToRecognize;
+        public List<Rectangle> _TorsWithDepthAnalyzing;
         private List<SelectionSquares> _TrainedItems;
         private List<Rectangle> _Tors;
+        private int _avarageDepth = 0;
+        private int _endOfHead = 0;
 
         public BodyPartSquaresRecognizer_Tors(List<System.Drawing.Rectangle> bodyToRecognize, List<System.Drawing.Rectangle> selectedPattern, List<SelectionSquares> _trainedItems)
         {
@@ -51,14 +53,29 @@ namespace GestureRecognition.SquaresRecognizer.Logic
 
             // 2 - Remove Head Elements
             RemoveHeadElements();
+
+            // 3 - Remove Legs
+            RemoveLegsElements((int)(avarageHeadHeight / count));
+
+            // 4 - Removing suares on the sides
             RemoveSquaresOnTheSides(avarageHeadWidth / count);
 
-            // 5 - Removes hands
-            RemoveSquaresOnTheHand();
+            // Get TORS 
+            // 6 - removes elements with too much depth values
+            RemovesElementsBasedOnDepth();
 
-            RemoveSquaresOnTheBottom(avarageHeadHeight / count);
+            return _TorsWithDepthAnalyzing;
+        }
 
-            return _bodyToRecognize.WholePattern;
+        private void RemoveLegsElements(int avarageBodyPartHeight)
+        {
+            for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
+            {
+                if (_bodyToRecognize.WholePattern[i].Y > _endOfHead + avarageBodyPartHeight)
+                {
+                    _bodyToRecognize.WholePattern.RemoveAt(i);
+                }
+            }
         }
 
         private void RemovesTooFarSquares(double avarageHeadWidth)
@@ -71,24 +88,6 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 }
             }
         }
-        private void RemoveSquaresOnTheHand()
-        {
-            var mininumLeft = _bodyToRecognize.WholePattern.Min(x => x.X);
-            var maxRight = _bodyToRecognize.WholePattern.Max(x => x.X);
-
-            for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
-            {
-                if (_Tors.Contains(_bodyToRecognize.WholePattern[i]))
-                {
-                    if (mininumLeft == _bodyToRecognize.WholePattern[i].X || maxRight == _bodyToRecognize.WholePattern[i].X)
-                    {
-                        _Tors.Remove(_bodyToRecognize.WholePattern[i]);
-                    }  
-                }
-            }
-
-            _bodyToRecognize.WholePattern = _Tors;
-        }
         private void RemoveHeadElements()
         {
             var headRecognizer = new BodyPartSquaresRecognizer_Head(_bodyToRecognize.WholePattern, _bodyToRecognize.ProperPattern, this._TrainedItems.Where(x=>x.BodyPart == (int)Enums.BodyPart.Head).ToList());
@@ -96,39 +95,42 @@ namespace GestureRecognition.SquaresRecognizer.Logic
 
             for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
             {
-                if (headRecognizer.HeadCentroid.Y + headRecognizer.AvarageHeadHeight / 2 > _bodyToRecognize.WholePattern[i].Y)
+                if (headRecognizer._HeadCentroid.Y + headRecognizer.AvarageHeadHeight / 2 > _bodyToRecognize.WholePattern[i].Y)
                 {
-                  if( Math.Abs(_bodyToRecognize.WholePattern[i].X - headRecognizer.HeadCentroid.X) >= headRecognizer.AvarageHeadWidth / 2 )
+                  if( Math.Abs(_bodyToRecognize.WholePattern[i].X - headRecognizer._HeadCentroid.X) >= headRecognizer.AvarageHeadWidth / 2 )
                     {
                        _bodyToRecognize.WholePattern.RemoveAt(i);
                     }
                 }
             }
 
-        }
-        private void RemoveSquaresOnTheBottom(double avarageHeadHeight)
-        {
-            _bodyToRecognize.WholePattern.OrderBy(x => x.Y);
+            _endOfHead = headRecognizer._HeadCentroid.Y + (int)headRecognizer.AvarageHeadHeight / 2;
 
-            for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
-            {
-                if (Math.Abs(_bodyToRecognize.WholePattern[_bodyToRecognize.WholePattern.Count - 1].Y - _bodyToRecognize.WholePattern[i].Y) > avarageHeadHeight)
-                {
-                    _bodyToRecognize.WholePattern.Remove(_bodyToRecognize.WholePattern[i]);
-                }
-            }
         }
         private void RemoveSquaresOnTheSides(double avarageHeadWidth)
         {
             for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
             {
-                if (Math.Abs(_bodyToRecognize.WholePattern[i].X - _bodyToRecognize.FullBodyCentroid.X) < avarageHeadWidth / 2 )
+                if (Math.Abs(_bodyToRecognize.WholePattern[i].X - _bodyToRecognize.FullBodyCentroid.X) < avarageHeadWidth / 2)
                 {
                     // add rects which should be removed
+                    _avarageDepth += _bodyToRecognize.WholePattern[i].Height;
                     _Tors.Add(_bodyToRecognize.WholePattern[i]);
+                    _bodyToRecognize.WholePattern.RemoveAt(i);
+                }
+            }
+            _avarageDepth = _avarageDepth / _Tors.Count;
+        }
+        private void RemovesElementsBasedOnDepth()
+        {
+            _TorsWithDepthAnalyzing = new List<Rectangle>();
+            for (int i = _Tors.Count - 1; i >= 0; i--)
+            {
+                if (Math.Abs(_Tors[i].Height - _avarageDepth) < (_bodyToRecognize.MaximaPointXYZ().ElementAt(5) - _avarageDepth) / 3)
+                {
+                    _TorsWithDepthAnalyzing.Add(_Tors[i]);
                 }
             }
         }
-
     }
 }

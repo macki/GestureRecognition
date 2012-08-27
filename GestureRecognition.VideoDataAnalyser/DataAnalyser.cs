@@ -20,6 +20,7 @@ namespace GestureRecognition.VideoDataAnalyser
         public List<VideoFrames> _videoFrame {get; set;}
         public TrackingSystem _trackingSystem { get; set; }
         public List<Points> _bodyDepth { get; set; }
+        private MaximaTrackingSystem _maximaTrackingSystem { get; set; }
 
         private CsvParsercs _cvsParser = null;
         private Records _record = null;
@@ -48,6 +49,7 @@ namespace GestureRecognition.VideoDataAnalyser
             graphics = _videoAnalyserForm.CreateGraphics();
             _videoAnalyserForm.DataAnalyzer = this;
             _trackingSystem = new TrackingSystem();
+            _maximaTrackingSystem = new MaximaTrackingSystem(_trackingSystem);
         }
 
         private void CreateVideoForm()
@@ -109,7 +111,7 @@ namespace GestureRecognition.VideoDataAnalyser
             var bitmap = new Bitmap(320, 240);
 
             DrawDepth(bodyArray, bitmap);
-            DrawHistogram(bodyArray);
+            //DrawHistogram(bodyArray);
             DrawSquares(bitmap);
             DrawMaximaPoints(bitmap);
 
@@ -147,8 +149,8 @@ namespace GestureRecognition.VideoDataAnalyser
 
         private void DrawMaximaPoints(Bitmap bitmap)
         {
-            var maximaPoints = _trackingSystem.GetMaximaPoints();
-            DrawRectangleSquare(maximaPoints, bitmap);
+            var bodyParts = _maximaTrackingSystem.Recognize();
+            DrawRectangleSquare(bodyParts, bitmap);
         }
         private void DrawDepth(List<Points> bodyArray, Bitmap bitmap)
         {
@@ -176,12 +178,12 @@ namespace GestureRecognition.VideoDataAnalyser
             {
                 for (int i = 0; i < _trackingSystem._selectionSquares.Count; i = i + 1)
                 {
-                    var pixel2 = Color.FromArgb(255, (int)(((int)_trackingSystem._selectionSquares[i].Height) / 10), 100, 100);
+                    var pixel2 = Color.FromArgb(255, (byte)(255 * (_trackingSystem._selectionSquares[i].Height / _trackingSystem.GetMaxZ())), 100, 100);
 
-                    if ((int)_trackingSystem._selectionSquares[i].Height < _trackingSystem.GetMinimumZ() + 150)
-                    {
-                        pixel2 = Color.FromArgb(255, 255, 100, 100);
-                    }
+                    //if ((int)_trackingSystem._selectionSquares[i].Height < _trackingSystem.GetMinimumZ() + 150)
+                    //{
+                    //pixel2 = Color.FromArgb(255, pixel2, 100, 100);
+                    //}
 
 
                     for (int j = 0; j < _squareSize; j++)

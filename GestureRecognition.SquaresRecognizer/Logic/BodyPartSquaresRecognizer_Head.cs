@@ -9,14 +9,16 @@ using System.Drawing;
 
 namespace GestureRecognition.SquaresRecognizer.Logic
 {
-    public class BodyPartSquaresRecognizer_Head : IBodyRecognizer
+    public class BodyPartSquaresRecognizer_Head : BodyPartSquaresRecognizer, IBodyRecognizer
     {
         private SelectionSquares _bodyToRecognize;
         private List<SelectionSquares> _headTrainedItems;
 
-        public Point HeadCentroid = new Point(0, 0);
+        public List<Rectangle> _HeadWithDepthAnalyzing;
+        public Point _HeadCentroid = new Point(0, 0);
         public double AvarageHeadHeight;
         public double AvarageHeadWidth;
+        private int _avarageDepth = 0;
 
         public BodyPartSquaresRecognizer_Head(List<System.Drawing.Rectangle> bodyToRecognize, List<System.Drawing.Rectangle> selectedPattern, List<SelectionSquares> _trainedItems)
         {
@@ -44,19 +46,20 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 avarageBodyRatio += item.BodyRatio;
                 avarageHeadHeight += item.PatternHeight;
                 avarageBodyElement += item.WholePattern.Count;
-                HeadCentroid.X += item.PatternCentroid.X;
-                HeadCentroid.Y += item.PatternCentroid.Y;
+                _HeadCentroid.X += item.PatternCentroid.X;
+                _HeadCentroid.Y += item.PatternCentroid.Y;
             }
             int count = _headTrainedItems.Count;
 
-            HeadCentroid.X = HeadCentroid.X / count;
-            HeadCentroid.Y = HeadCentroid.Y / count;
+            _HeadCentroid.X = _HeadCentroid.X / count;
+            _HeadCentroid.Y = _HeadCentroid.Y / count;
             AvarageHeadHeight = avarageHeadHeight / count;
             AvarageHeadWidth = avarageHeadWidth / count;
 
             RemoveSquaresUnderCentroid();
             RemoveSquaresOnTheSides(AvarageHeadWidth);
             RemoveSquaresOnTheBottom(AvarageHeadHeight);
+            TakeMinimumDepthRects();
 
             return _bodyToRecognize.WholePattern;
         }
@@ -92,6 +95,24 @@ namespace GestureRecognition.SquaresRecognizer.Logic
                 if (_bodyToRecognize.WholePattern[i].Y > _bodyToRecognize.FullBodyCentroid.Y)
                 {
                     _bodyToRecognize.WholePattern.Remove(_bodyToRecognize.WholePattern[i]);
+                }
+                else
+                {
+                    _avarageDepth += _bodyToRecognize.WholePattern[i].Height;
+                }
+            }
+            _avarageDepth = _avarageDepth / _bodyToRecognize.WholePattern.Count;
+        }
+
+        private void TakeMinimumDepthRects()
+        {
+            var wholeAvarageDepth = _bodyToRecognize.AvarageBodyDepth();
+            _HeadWithDepthAnalyzing = new List<Rectangle>();
+            for (int i = _bodyToRecognize.WholePattern.Count - 1; i >= 0; i--)
+            {
+                if (Math.Abs(_bodyToRecognize.WholePattern[i].Height - wholeAvarageDepth) > 80)
+                {
+                    _HeadWithDepthAnalyzing.Add(_bodyToRecognize.WholePattern[i]);
                 }
             }
         }
