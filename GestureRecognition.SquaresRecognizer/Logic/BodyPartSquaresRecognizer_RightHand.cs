@@ -93,7 +93,7 @@ namespace GestureRecognition.SquaresRecognizer.Logic
 
         private void CalculateProperCenter()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void RemoveOneTwoSquaresPart()

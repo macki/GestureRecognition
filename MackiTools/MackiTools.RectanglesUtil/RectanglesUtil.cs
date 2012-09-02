@@ -19,5 +19,21 @@ namespace MackiTools.MackiTools.RectanglesUtil
             }
             return new Point((int) x / rects.Count, (int)y / rects.Count);
         }
+        public static List<Rectangle> GeRegionWithTheSameDepthVariation(List<Rectangle> rects, Rectangle startingPoint, int depthVariation, int size)
+        {
+            var foundRects = new List<Rectangle>();
+            for (int i = rects.Count - 1; i >= 0; i--)
+            {
+                // get only point which contains in depthVariation
+                if (Math.Abs(startingPoint.Height - rects[i].Height) <= depthVariation)
+                {
+                    if (Math.Abs(startingPoint.X - rects[i].X) < size && Math.Abs(startingPoint.Y - rects[i].Y) < size)
+                    {
+                        foundRects.Add(rects[i]);
+                    }
+                }
+            }
+            return foundRects;
+        }
     }
 }

@@ -55,6 +55,10 @@
       <Project>{48248497-A546-42E0-9133-EB2D9A0B492F}</Project>
       <Name>GestureRecognition.UnistrokeRecognizer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MackiTools\MackiTools.csproj">
+      <Project>{4B8090B6-4936-4DD9-8178-EAB547C98B73}</Project>
+      <Name>MackiTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
