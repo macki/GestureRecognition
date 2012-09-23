@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\GestureModel.cs" />
     <Compile Include="DataProvider\DataProvider.SelectionSquares.cs" />
     <Compile Include="DataProvider\DataProvider.cs" />
     <Compile Include="DataProvider\DataProvider.Records.cs" />
@@ -69,6 +70,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

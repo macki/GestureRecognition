@@ -73,7 +73,7 @@ namespace GestureRecognition
             VideoCaptureDeviceForm form = new VideoCaptureDeviceForm();
 
             // create new instance of video data analyser
-            _videDataAnalyser = new DataAnalyser(_selectedRecord);
+            _videDataAnalyser = new DataAnalyser(_selectedRecord, _selectedRecord.Id);
 
             // create video source
             FileVideoSource fileSource = new FileVideoSource(_selectedRecord.AbsolutePath);

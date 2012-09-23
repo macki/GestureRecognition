@@ -35,6 +35,7 @@ namespace GestureRecognition
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.VideoPanel = new System.Windows.Forms.Panel();
+            this.PlayWithAutoSaving = new System.Windows.Forms.CheckBox();
             this.PauseButton = new System.Windows.Forms.Button();
             this.IsRgbCheckBox = new System.Windows.Forms.CheckBox();
             this.SaveButton = new System.Windows.Forms.Button();
@@ -57,7 +58,10 @@ namespace GestureRecognition
             this.squarePatternRecognizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.GetCsvData_button = new System.Windows.Forms.Button();
-            this.PlayWithAutoSaving = new System.Windows.Forms.CheckBox();
+            this.firstShootLearningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recordGestureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadGestureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recognizeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.VideoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RecordsGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -76,6 +80,16 @@ namespace GestureRecognition
             this.VideoPanel.Name = "VideoPanel";
             this.VideoPanel.Size = new System.Drawing.Size(551, 389);
             this.VideoPanel.TabIndex = 0;
+            // 
+            // PlayWithAutoSaving
+            // 
+            this.PlayWithAutoSaving.AutoSize = true;
+            this.PlayWithAutoSaving.Location = new System.Drawing.Point(423, 326);
+            this.PlayWithAutoSaving.Name = "PlayWithAutoSaving";
+            this.PlayWithAutoSaving.Size = new System.Drawing.Size(133, 17);
+            this.PlayWithAutoSaving.TabIndex = 6;
+            this.PlayWithAutoSaving.Text = "with auto saving (slow)";
+            this.PlayWithAutoSaving.UseVisualStyleBackColor = true;
             // 
             // PauseButton
             // 
@@ -177,7 +191,8 @@ namespace GestureRecognition
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.gesturesToolStripMenuItem,
-            this.recognizeToolStripMenuItem});
+            this.recognizeToolStripMenuItem,
+            this.firstShootLearningToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(971, 24);
@@ -291,15 +306,33 @@ namespace GestureRecognition
             this.GetCsvData_button.UseVisualStyleBackColor = true;
             this.GetCsvData_button.Click += new System.EventHandler(this.GetSkeletonData_Click);
             // 
-            // PlayWithAutoSaving
+            // firstShootLearningToolStripMenuItem
             // 
-            this.PlayWithAutoSaving.AutoSize = true;
-            this.PlayWithAutoSaving.Location = new System.Drawing.Point(423, 326);
-            this.PlayWithAutoSaving.Name = "PlayWithAutoSaving";
-            this.PlayWithAutoSaving.Size = new System.Drawing.Size(133, 17);
-            this.PlayWithAutoSaving.TabIndex = 6;
-            this.PlayWithAutoSaving.Text = "with auto saving (slow)";
-            this.PlayWithAutoSaving.UseVisualStyleBackColor = true;
+            this.firstShootLearningToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recordGestureToolStripMenuItem,
+            this.loadGestureToolStripMenuItem,
+            this.recognizeToolStripMenuItem1});
+            this.firstShootLearningToolStripMenuItem.Name = "firstShootLearningToolStripMenuItem";
+            this.firstShootLearningToolStripMenuItem.Size = new System.Drawing.Size(127, 20);
+            this.firstShootLearningToolStripMenuItem.Text = "First Shoot Learning ";
+            // 
+            // recordGestureToolStripMenuItem
+            // 
+            this.recordGestureToolStripMenuItem.Name = "recordGestureToolStripMenuItem";
+            this.recordGestureToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.recordGestureToolStripMenuItem.Text = "Record Gesture";
+            // 
+            // loadGestureToolStripMenuItem
+            // 
+            this.loadGestureToolStripMenuItem.Name = "loadGestureToolStripMenuItem";
+            this.loadGestureToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.loadGestureToolStripMenuItem.Text = "Load Gesture";
+            // 
+            // recognizeToolStripMenuItem1
+            // 
+            this.recognizeToolStripMenuItem1.Name = "recognizeToolStripMenuItem1";
+            this.recognizeToolStripMenuItem1.Size = new System.Drawing.Size(154, 22);
+            this.recognizeToolStripMenuItem1.Text = "Recognize";
             // 
             // MainForm
             // 
@@ -349,6 +382,10 @@ namespace GestureRecognition
         private System.Windows.Forms.Button PauseButton;
         private System.Windows.Forms.ToolStripMenuItem squarePatternRecognizerToolStripMenuItem;
         private System.Windows.Forms.CheckBox PlayWithAutoSaving;
+        private System.Windows.Forms.ToolStripMenuItem firstShootLearningToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recordGestureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadGestureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recognizeToolStripMenuItem1;
 
     }
 }

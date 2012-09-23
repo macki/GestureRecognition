@@ -46,6 +46,11 @@
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.HistogramPictureBox = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.LeftHandCheckBox = new System.Windows.Forms.CheckBox();
+            this.RightHandCheckBox = new System.Windows.Forms.CheckBox();
+            this.LearnGestureButton = new System.Windows.Forms.Button();
+            this.LoadGestureClick = new System.Windows.Forms.Button();
+            this.lineShape2 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             ((System.ComponentModel.ISupportInitialize)(this.HistogramPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -184,8 +189,9 @@
             this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
             this.shapeContainer1.Name = "shapeContainer1";
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.lineShape2,
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(684, 418);
+            this.shapeContainer1.Size = new System.Drawing.Size(686, 435);
             this.shapeContainer1.TabIndex = 14;
             this.shapeContainer1.TabStop = false;
             // 
@@ -215,11 +221,63 @@
             this.label4.TabIndex = 16;
             this.label4.Text = "Histogram";
             // 
+            // LeftHandCheckBox
+            // 
+            this.LeftHandCheckBox.AutoSize = true;
+            this.LeftHandCheckBox.Location = new System.Drawing.Point(348, 278);
+            this.LeftHandCheckBox.Name = "LeftHandCheckBox";
+            this.LeftHandCheckBox.Size = new System.Drawing.Size(71, 17);
+            this.LeftHandCheckBox.TabIndex = 17;
+            this.LeftHandCheckBox.Text = "Left hand";
+            this.LeftHandCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // RightHandCheckBox
+            // 
+            this.RightHandCheckBox.AutoSize = true;
+            this.RightHandCheckBox.Location = new System.Drawing.Point(434, 278);
+            this.RightHandCheckBox.Name = "RightHandCheckBox";
+            this.RightHandCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.RightHandCheckBox.TabIndex = 18;
+            this.RightHandCheckBox.Text = "Right Hand";
+            this.RightHandCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // LearnGestureButton
+            // 
+            this.LearnGestureButton.Location = new System.Drawing.Point(348, 323);
+            this.LearnGestureButton.Name = "LearnGestureButton";
+            this.LearnGestureButton.Size = new System.Drawing.Size(119, 23);
+            this.LearnGestureButton.TabIndex = 20;
+            this.LearnGestureButton.Text = "Learn Gesture";
+            this.LearnGestureButton.UseVisualStyleBackColor = true;
+            this.LearnGestureButton.Click += new System.EventHandler(this.LearnGestureClick);
+            // 
+            // LoadGestureClick
+            // 
+            this.LoadGestureClick.Location = new System.Drawing.Point(578, 323);
+            this.LoadGestureClick.Name = "LoadGestureClick";
+            this.LoadGestureClick.Size = new System.Drawing.Size(94, 23);
+            this.LoadGestureClick.TabIndex = 21;
+            this.LoadGestureClick.Text = "Load Gesture";
+            this.LoadGestureClick.UseVisualStyleBackColor = true;
+            this.LoadGestureClick.Click += new System.EventHandler(this.LoadGestureCLick);
+            // 
+            // lineShape2
+            // 
+            this.lineShape2.Name = "lineShape2";
+            this.lineShape2.X1 = 705;
+            this.lineShape2.X2 = 704;
+            this.lineShape2.Y1 = 25;
+            this.lineShape2.Y2 = 406;
+            // 
             // VideoAnalyserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 418);
+            this.ClientSize = new System.Drawing.Size(686, 435);
+            this.Controls.Add(this.LoadGestureClick);
+            this.Controls.Add(this.LearnGestureButton);
+            this.Controls.Add(this.RightHandCheckBox);
+            this.Controls.Add(this.LeftHandCheckBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.HistogramPictureBox);
             this.Controls.Add(this.NoSquares);
@@ -240,6 +298,7 @@
             this.Name = "VideoAnalyserForm";
             this.Text = "VideoAnalyserForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormIsClosed);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Main_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.HistogramPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -266,5 +325,10 @@
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private System.Windows.Forms.PictureBox HistogramPictureBox;
         private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.CheckBox LeftHandCheckBox;
+        public System.Windows.Forms.CheckBox RightHandCheckBox;
+        private System.Windows.Forms.Button LearnGestureButton;
+        private System.Windows.Forms.Button LoadGestureClick;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape2;
     }
 }

@@ -10,6 +10,7 @@ using GestureRecognition.BodyTracking;
 using GestureRecognition.UnistrokeRecognizer.Logic;
 using GestureRecognition.Data.DataSerialization;
 using AForge.Imaging;
+using GestureRecognition.Data.Application;
 
 namespace GestureRecognition.VideoDataAnalyser
 {
@@ -38,7 +39,7 @@ namespace GestureRecognition.VideoDataAnalyser
 
         #region Constructors
 
-        public DataAnalyser(Records record)
+        public DataAnalyser(Records record, int gestureId)
         {
             _videoFrame =  new List<VideoFrames>();
             _record = record;
@@ -49,7 +50,7 @@ namespace GestureRecognition.VideoDataAnalyser
             graphics = _videoAnalyserForm.CreateGraphics();
             _videoAnalyserForm.DataAnalyzer = this;
             _trackingSystem = new TrackingSystem();
-            _maximaTrackingSystem = new MaximaTrackingSystem(_trackingSystem);
+            _maximaTrackingSystem = new MaximaTrackingSystem(_trackingSystem, gestureId);
         }
 
         private void CreateVideoForm()
@@ -151,6 +152,14 @@ namespace GestureRecognition.VideoDataAnalyser
         {
             var bodyParts = _maximaTrackingSystem.Recognize();
             DrawRectangleSquare(bodyParts, bitmap);
+        }
+        public void SaveGesture(string fileName)
+        {
+            _maximaTrackingSystem.GestureModel.Save(fileName);
+        }
+        public GestureModel Load(string fileName)
+        {
+            return _maximaTrackingSystem.GestureModel.Load(fileName);
         }
         private void DrawDepth(List<Points> bodyArray, Bitmap bitmap)
         {

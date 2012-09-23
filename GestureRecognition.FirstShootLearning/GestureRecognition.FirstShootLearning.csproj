@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{01A5A824-123F-41E5-A4F8-E4F4ECE328AC}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{8C425132-EF43-4618-8CA7-533F449BFCB0}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GestureRecognition.VideoDataAnalyser</RootNamespace>
-    <AssemblyName>GestureRecognition.VideoDataAnalyser</AssemblyName>
+    <RootNamespace>GestureRecognition.FirstShootLearning</RootNamespace>
+    <AssemblyName>GestureRecognition.FirstShootLearning</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,21 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\..\aForge\Release\AForge.Imaging.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging.Formats">
-      <HintPath>..\..\aForge\Release\AForge.Imaging.Formats.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging.IPPrototyper">
-      <HintPath>..\..\aForge\Release\AForge.Imaging.IPPrototyper.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -56,14 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAnalyser.cs" />
-    <Compile Include="Forms\VideoAnalyserForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\VideoAnalyserForm.Designer.cs">
-      <DependentUpon>VideoAnalyserForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="FirstShootLearningRecognizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,23 +58,18 @@
       <Project>{FF77E98B-75B9-46D4-AB1B-0CD24B794378}</Project>
       <Name>GestureRecognition.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GestureRecognition.FirstShootLearning\GestureRecognition.FirstShootLearning.csproj">
-      <Project>{8C425132-EF43-4618-8CA7-533F449BFCB0}</Project>
-      <Name>GestureRecognition.FirstShootLearning</Name>
+    <ProjectReference Include="..\GestureRecognition.SquaresRecognizer\GestureRecognition.SquaresRecognizer.csproj">
+      <Project>{B154C787-3964-4BE5-998F-A7C914E9E354}</Project>
+      <Name>GestureRecognition.SquaresRecognizer</Name>
     </ProjectReference>
     <ProjectReference Include="..\GestureRecognition.UnistrokeRecognizer\GestureRecognition.UnistrokeRecognizer.csproj">
       <Project>{48248497-A546-42E0-9133-EB2D9A0B492F}</Project>
       <Name>GestureRecognition.UnistrokeRecognizer</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Forms\VideoAnalyserForm.resx">
-      <DependentUpon>VideoAnalyserForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
+    <ProjectReference Include="..\MackiTools\MackiTools.csproj">
+      <Project>{4B8090B6-4936-4DD9-8178-EAB547C98B73}</Project>
+      <Name>MackiTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

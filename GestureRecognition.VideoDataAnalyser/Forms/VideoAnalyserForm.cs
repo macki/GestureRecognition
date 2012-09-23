@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using GestureRecognition.Data.DataSerialization;
 using System.Threading;
+using GestureRecognition.Data.Application;
 
 namespace GestureRecognition.VideoDataAnalyser.Forms
 {
@@ -15,6 +16,7 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
     {
         public DataAnalyser DataAnalyzer { get; set; }
         public bool IsSnchronize { get; set; }
+        public GestureModel LoadedGesture { get; set; }
         public Boolean IsPlaying
         {
             get
@@ -43,6 +45,13 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
         private Boolean _isPlaying = true;
         private Boolean _formIsClosed = false;
         private int _currentFrame = 0;
+        private List<Rectangle> _rects = new List<Rectangle>();
+        private List<Rectangle> _loadedRectsBody;
+        private List<Rectangle> _selectedRects = new List<Rectangle>();
+        private List<Rectangle> _selectedRectsPattern = new List<Rectangle>();
+        private int _cW = 320;
+        private int _cH = 240;
+        private int _stepSize = 0;
 
         #region Constructors
        
@@ -75,11 +84,18 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
 
         private void Play()
         {
-            DataAnalyzer._bodyDepth = DataAnalyzer._trackingSystem.GetAvarageDepth(DataAnalyzer._videoFrame.ElementAt(CurrentFrame).DepthArray, 1, GetSquareSize());
-            UpdateFrame(DataAnalyzer._trackingSystem._selectionSquares);
-            DataAnalyzer.Draw(DataAnalyzer._videoFrame[_currentFrame].DepthArray,
-                              DataAnalyzer._bodyDepth,
-                              new Bitmap(320, 240));
+            if (LoadedGesture == null)
+            {
+                DataAnalyzer._bodyDepth = DataAnalyzer._trackingSystem.GetAvarageDepth(DataAnalyzer._videoFrame.ElementAt(CurrentFrame).DepthArray, 1, GetSquareSize());
+                UpdateFrame(DataAnalyzer._trackingSystem._selectionSquares);
+                DataAnalyzer.Draw(DataAnalyzer._videoFrame[_currentFrame].DepthArray,
+                                  DataAnalyzer._bodyDepth,
+                                  new Bitmap(320, 240));
+            }
+            else
+            {
+                DrawLoadedSkeletonSquareBody(LoadedGesture.WholeBody.ElementAt(_currentFrame), LoadedGesture.BodyPartSquaresRegions_LeftHand.ElementAt(_currentFrame));
+            }
 
             if (DataAnalyzer._videoFrame.Count - 2 > _currentFrame)
             {
@@ -158,6 +174,58 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
             }
         }
 
+        private void DrawLoadedSkeletonSquareBody(List<Rectangle> wholeBody, List<Rectangle> bodyPart )
+        {
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+
+            int squareSkeleletonSize = wholeBody[0].Width;
+            DrawRecognizerGrid(squareSkeleletonSize);
+
+            foreach (var item in wholeBody)
+            {
+                if (_rects.Where(x => x.X == item.X && x.Y == item.Y).Count() > 0)
+                {
+                    var brush = new SolidBrush(Color.FromArgb(255, 100 + item.Height / 15, 100, 100));
+
+                   formGraphics.FillRectangle(brush, _rects.Where(x => x.X == item.X && x.Y == item.Y).First());
+                   var rect = new Rectangle(item.X, item.Y, _stepSize, item.Height);
+                   foreach(var bItem in bodyPart)
+                    {
+                        var bRect = new Rectangle(bItem.X, bItem.Y, _stepSize, bItem.Height);
+
+                        if (bRect == rect)
+                        {
+                            var brush2 = new SolidBrush(Color.FromArgb(255, 100, 100));
+                            formGraphics.FillRectangle(brush2, _rects.Where(x => x.X == item.X && x.Y == item.Y).First());
+                            _selectedRects.Add(rect);
+                        }
+                    } 
+                }
+            }
+        }
+
+        private void DrawRecognizerGrid(int squareSize)
+        {
+            _rects.Clear();
+            Refresh();
+
+            System.Drawing.SolidBrush myBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Red);
+            System.Drawing.Graphics formGraphics = this.CreateGraphics();
+
+            _stepSize = squareSize;
+
+            for (int i = 0; i < _cW; i = i + _stepSize)
+            {
+                for (int j = 0; j < _cH; j = j + _stepSize)
+                {
+                    var pen = new Pen(Brushes.Black);
+                    var r = new Rectangle(i, j, _stepSize, _stepSize);
+                    formGraphics.DrawRectangle(pen, r);
+                    _rects.Add(r);
+                }
+            }
+        }
+
         #region Events
         
         private void SaveSquaresButton_OnClick(object sender, EventArgs e)
@@ -219,8 +287,76 @@ namespace GestureRecognition.VideoDataAnalyser.Forms
             _formIsClosed = true;
         }
 
+        private void LearnGestureClick(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Gestures (*.xml)|*.xml";
+            saveDialog.Title = "Save Gesture As";
+            saveDialog.AddExtension = true;
+            saveDialog.RestoreDirectory = false;
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                DataAnalyzer.SaveGesture(saveDialog.FileName);
+            }    
+        }
+
+        private void LoadGestureCLick(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Gestures (*.xml)|*.xml";
+            dlg.Title = "Load Gestures";
+            dlg.Multiselect = false;
+            dlg.RestoreDirectory = false;
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadedGesture = DataAnalyzer.Load(dlg.FileName);
+            }
+        }
+
+        private void Main_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (_rects.Any())
+            {
+                System.Drawing.Graphics formGraphics = this.CreateGraphics();
+                Point cursorPos = this.PointToClient(Cursor.Position);
+                // TODO
+                for (int i = 0; i < _rects.Count; i++)
+                {
+                    if (_rects[i].Contains(cursorPos))
+                    {
+                        var found = false;
+                        foreach (var item in _selectedRects)
+                        {
+                            if (item.Contains(cursorPos))
+                            {
+                                formGraphics.FillRectangle(Brushes.White, _rects[i]);
+                                _selectedRects.Remove(item);
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if(found == false)
+                        {
+                            formGraphics.FillRectangle(Brushes.Red, _rects[i]);
+
+                            foreach (var item in LoadedGesture.WholeBody.ElementAt(CurrentFrame))
+                            {
+                                if (item.X == _rects[i].X && item.Y == item.X)
+                                {
+                                    _selectedRects.Add(new Rectangle(_rects[i].X, _rects[i].X, item.Width, item.Height));
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
         #endregion
-
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition", "GestureRecognition\GestureRecognition.csproj", "{09CF5F27-85CA-4D8A-A781-30C95DD2E873}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition.BodyTracking", "GestureRecognition.BodyTracking\GestureRecognition.BodyTracking.csproj", "{05CAB6AC-79B5-4F60-A7E1-6CB49754F16E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition.SquaresRecognizer", "GestureRecognition.SquaresRecognizer\GestureRecognition.SquaresRecognizer.csproj", "{B154C787-3964-4BE5-998F-A7C914E9E354}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestureRecognition.FirstShootLearning", "GestureRecognition.FirstShootLearning\GestureRecognition.FirstShootLearning.csproj", "{8C425132-EF43-4618-8CA7-533F449BFCB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,16 @@ Global
 		{B154C787-3964-4BE5-998F-A7C914E9E354}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B154C787-3964-4BE5-998F-A7C914E9E354}.Release|x86.ActiveCfg = Release|x86
 		{B154C787-3964-4BE5-998F-A7C914E9E354}.Release|x86.Build.0 = Release|x86
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8C425132-EF43-4618-8CA7-533F449BFCB0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

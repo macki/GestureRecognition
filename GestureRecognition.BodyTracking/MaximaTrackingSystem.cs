@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using MackiTools.MackiTools.RectanglesUtil;
+using GestureRecognition.Data.Application;
 
 namespace GestureRecognition.BodyTracking
 {
@@ -13,10 +14,13 @@ namespace GestureRecognition.BodyTracking
         private int step = 20;
         private int centerX = 0;
         private int centerY = 0;
-        
-        public MaximaTrackingSystem(TrackingSystem trackingSystem)
+
+        public GestureModel GestureModel;
+      
+        public MaximaTrackingSystem(TrackingSystem trackingSystem, int gestureId)
         {
             this._trackingSystem = trackingSystem;
+            GestureModel = new GestureModel(gestureId);
         }
 
         public List<Rectangle> Recognize()
@@ -29,11 +33,20 @@ namespace GestureRecognition.BodyTracking
             var setOfMinX = new List<Rectangle>();
             var setOfMaxX = new List<Rectangle>();
             var setOfMinZ = new List<Rectangle>();
+
             GetWholeBodyMinimumYSquares(ref setOfMinY,ref setOfMinX,ref setOfMaxX, ref setOfMaxY, ref setOfMinZ);
             GetCentroid(ref setOfMinX, ref setOfMaxX);
 
             bodyPartList.AddRange(RecognizeLeftHand(ref setOfMinY, ref  setOfMaxX, ref setOfMaxY, ref setOfMinZ));
 
+            //bodyPartList.AddRange(setOfMaxX);
+            //bodyPartList.AddRange(setOfMinX);
+            //bodyPartList.AddRange(setOfMaxY);
+            //bodyPartList.AddRange(setOfMinY);
+            //bodyPartList.AddRange(setOfMinZ);
+
+            // add to gestures
+            GestureModel.AddNextFrame(bodyPartList, null,null, _trackingSystem._selectionSquares);
 
             return bodyPartList;
         }
@@ -152,12 +165,12 @@ namespace GestureRecognition.BodyTracking
             {
                 choosenMaxX = orderedMaxX.Take(7).ToList();
             }
-
+            //choosenMaxX = orderedMaxX.ToList();
             // remove minimalY which are too far for maxX
             var minX = choosenMaxX.Min(x => x.X);
             for (int i = setOfMinimalY.Count - 1; i >= 0; i--)
             {
-                if (Math.Abs(setOfMinimalY.ElementAt(i).X - minX) > 20)
+                if (Math.Abs(setOfMinimalY.ElementAt(i).X - minX) >= 10)
                 {
                     setOfMinimalY.RemoveAt(i);
                 }
@@ -174,13 +187,14 @@ namespace GestureRecognition.BodyTracking
             {
                 for (int j = 0; j < _trackingSystem._selectionSquares.Count; j++)
                 {
-                    if(Math.Abs(_trackingSystem._selectionSquares[j].X - rects[i].X) < 10 && Math.Abs(_trackingSystem._selectionSquares[j].Y - rects[i].Y) < 10 )
+                    if (Math.Abs(_trackingSystem._selectionSquares[j].X - rects[i].X) < 5 && Math.Abs(_trackingSystem._selectionSquares[j].Y - rects[i].Y) < 10)
                     {
                         if (_trackingSystem._selectionSquares[j].Height < rects[i].Height)
                         {
                             if (_trackingSystem._selectionSquares[j].Height != 0)
                             {
                                 //rects[i] = _trackingSystem._selectionSquares[j];
+                                rects.Add(_trackingSystem._selectionSquares[j]);
                             }
                         }
                     }
@@ -192,50 +206,51 @@ namespace GestureRecognition.BodyTracking
             {
                 if (rects.Count < 80)
                 {
-                    var rect = RectanglesUtil.GeRegionWithTheSameDepthVariation(_trackingSystem._selectionSquares, rects[i], 40, 10);
+                    var rect = RectanglesUtil.GeRegionWithTheSameDepthVariation(_trackingSystem._selectionSquares, rects[i], 30, 8);
 
                     foreach (var item in rect)
                     {
                         if (!rects.Contains(item))
                         {
-                            rects.Add(item);
+                           rects.Add(item); 
                         }
                     }
                 }
             }
 
-            var centroid = RectanglesUtil.GetCentroid(rects);
-            var centroidRect = new Rectangle(centroid.X, centroid.Y, 0, 0);
+            //rects = rects.OrderBy(x => x.Height).Take(40).ToList();
+            //var centroid = RectanglesUtil.GetCentroid(rects);
+            //var centroidRect = new Rectangle(centroid.X, centroid.Y, 0, 0);
 
-            // calculate centroid
-            for (int i = 0; i < _trackingSystem._selectionSquares.Count; i++)
-            {
-                if ((Math.Abs(centroid.X - _trackingSystem._selectionSquares[i].X) < 2) && (Math.Abs(centroid.Y - _trackingSystem._selectionSquares[i].Y) < 2))
-                {
-                    centroidRect = _trackingSystem._selectionSquares[i];
-                }
-            }
+            //// calculate centroid
+            //for (int i = 0; i < _trackingSystem._selectionSquares.Count; i++)
+            //{
+            //    if ((Math.Abs(centroid.X - _trackingSystem._selectionSquares[i].X) < 2) && (Math.Abs(centroid.Y - _trackingSystem._selectionSquares[i].Y) < 2))
+            //    {
+            //        centroidRect = _trackingSystem._selectionSquares[i];
+            //    }
+            //}
 
             // Centroid is on the right part somewhere [for sure the rest of the hand would on the left in some interval 40-90]
-            var pointIncludesHand = new List<Rectangle>();
-            for (int i = 0; i < _trackingSystem._selectionSquares.Count; i++)
-            {
-                if (centroid.X - _trackingSystem._selectionSquares.ElementAt(i).X < 60 && Math.Abs(centroid.Y - _trackingSystem._selectionSquares.ElementAt(i).Y) < 100 )
-                {
-                    pointIncludesHand.Add(_trackingSystem._selectionSquares.ElementAt(i));
-                }
-            }
-            // 
-            pointIncludesHand = pointIncludesHand.OrderBy(x => x.Height).Take(80).ToList();
-            //
-            var avarageHandYHeight = orderedMaxX.Take(4).Average(x => x.Y);
+            //var pointIncludesHand = new List<Rectangle>();
+            //for (int i = 0; i < _trackingSystem._selectionSquares.Count; i++)
+            //{
+            //    if (centroid.X - _trackingSystem._selectionSquares.ElementAt(i).X < 60 && Math.Abs(centroid.Y - _trackingSystem._selectionSquares.ElementAt(i).Y) < 100 )
+            //    {
+            //        pointIncludesHand.Add(_trackingSystem._selectionSquares.ElementAt(i));
+            //    }
+            //}
+            //// 
+            //pointIncludesHand = pointIncludesHand.OrderBy(x => x.Height).Take(80).ToList();
+            ////
+            //var avarageHandYHeight = orderedMaxX.Take(4).Average(x => x.Y);
 
 
-
+            //rects = choosenMaxX;
             //rects.AddRange(setOfMinimalY);
             //rects.AddRange(orderedMaxX.Take(4));
             //setOfMinimalY.AddRange(properMinZ);
-            //rects.AddRange(orderedMaxY);
+           // rects.AddRange(orderedMaxY);
             //setOfMinimalY.Clear();
             //rects.Add(centroidRect);
 
