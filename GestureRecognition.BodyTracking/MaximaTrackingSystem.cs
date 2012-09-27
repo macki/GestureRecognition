@@ -37,7 +37,11 @@ namespace GestureRecognition.BodyTracking
             GetWholeBodyMinimumYSquares(ref setOfMinY,ref setOfMinX,ref setOfMaxX, ref setOfMaxY, ref setOfMinZ);
             GetCentroid(ref setOfMinX, ref setOfMaxX);
 
-            bodyPartList.AddRange(RecognizeLeftHand(ref setOfMinY, ref  setOfMaxX, ref setOfMaxY, ref setOfMinZ));
+            var leftHand = RecognizeLeftHand( setOfMinY,   setOfMaxX,  setOfMaxY,  setOfMinZ).ToList();
+            var rightHand = RecognizeRightHand( setOfMinY,   setOfMinX,  setOfMaxY,  setOfMinZ).ToList();
+
+            bodyPartList.AddRange(leftHand);
+            bodyPartList.AddRange(rightHand);
 
             //bodyPartList.AddRange(setOfMaxX);
             //bodyPartList.AddRange(setOfMinX);
@@ -46,7 +50,7 @@ namespace GestureRecognition.BodyTracking
             //bodyPartList.AddRange(setOfMinZ);
 
             // add to gestures
-            GestureModel.AddNextFrame(bodyPartList, null,null, _trackingSystem._selectionSquares);
+            GestureModel.AddNextFrame(leftHand, rightHand, null, _trackingSystem._selectionSquares);
 
             return bodyPartList;
         }
@@ -134,7 +138,7 @@ namespace GestureRecognition.BodyTracking
             }
         }
 
-        private IEnumerable<Rectangle> RecognizeLeftHand(ref List<Rectangle> setOfMinimalY, ref List<Rectangle> setOfMaxX, ref  List<Rectangle> setOfMaxY, ref List<Rectangle> setOfMinZ)
+        private IEnumerable<Rectangle> RecognizeLeftHand( List<Rectangle> setOfMinimalY,  List<Rectangle> setOfMaxX,   List<Rectangle> setOfMaxY,  List<Rectangle> setOfMinZ)
         {
             var rects = new List<Rectangle>();
 
@@ -257,6 +261,95 @@ namespace GestureRecognition.BodyTracking
            //rects.AddRange(pointIncludesHand);
 
             return rects;
+        }
+        private IEnumerable<Rectangle> RecognizeRightHand( List<Rectangle> setOfMinimalY,  List<Rectangle> setOfMaxX,   List<Rectangle> setOfMaxY,  List<Rectangle> setOfMinZ)
+        {
+           var rects = new List<Rectangle>();
+
+            // 1 - Remove from MinY squres resposnsible for Head
+            for (int i = setOfMinimalY.Count - 1; i >= 0; i--)
+            {
+                if (setOfMinimalY.ElementAt(i).X < centerX * 4/5)
+                {
+                    setOfMinimalY.RemoveAt(i);
+                    setOfMaxY.RemoveAt(i);
+                }
+            }
+            // 2 -
+            var orderedMinX =  setOfMaxX.OrderBy(x => x.X);
+            var orderedMaxY = (setOfMaxY.OrderBy(x => x.Y)).ToList();
+            orderedMaxY = (from p in orderedMaxY where p.Y != 0 select p).ToList();
+            var properMinZ = from p in setOfMinZ where p.Height != 9999 select p;
+            setOfMinimalY = (from p in setOfMinimalY where p.Y != 999 select p).ToList();
+
+            // calculate variation in minX and maxX
+            var choosenMinX = new List<Rectangle>();
+            var dif = orderedMinX.Take(6).Max(x => x.X) - orderedMinX.Take(6).Min(x => x.X);
+            if (dif >= 15)
+            {
+                choosenMinX = orderedMinX.Take(2).ToList();
+            }
+            else
+            {
+                choosenMinX = orderedMinX.Take(7).ToList();
+            }
+            //choosenMaxX = orderedMaxX.ToList();
+            // remove minimalY which are too far for maxX
+            var minX = choosenMinX.Min(x => x.X);
+            for (int i = setOfMinimalY.Count - 1; i >= 0; i--)
+            {
+                if (Math.Abs(setOfMinimalY.ElementAt(i).X - minX) >= 10)
+                {
+                    setOfMinimalY.RemoveAt(i);
+                }
+            }
+
+
+            //rects.AddRange(setOfMinimalY);
+            rects.AddRange(choosenMinX);
+            
+            //rects.AddRange(orderedMaxY);
+
+            // each point searching their minima Z in the naighborhood (20, 20) which is not actually on the list
+            for (int i = 0; i < rects.Count; i++)
+            {
+                for (int j = 0; j < _trackingSystem._selectionSquares.Count; j++)
+                {
+                    if (Math.Abs(_trackingSystem._selectionSquares[j].X - rects[i].X) < 5 && Math.Abs(_trackingSystem._selectionSquares[j].Y - rects[i].Y) < 10)
+                    {
+                        if (_trackingSystem._selectionSquares[j].Height < rects[i].Height)
+                        {
+                            if (_trackingSystem._selectionSquares[j].Height != 0)
+                            {
+                                //rects[i] = _trackingSystem._selectionSquares[j];
+                                rects.Add(_trackingSystem._selectionSquares[j]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Gets The samve depth variation region
+            for (int i = 0; i < rects.Count; i++)
+            {
+                if (rects.Count < 80)
+                {
+                    var rect = RectanglesUtil.GeRegionWithTheSameDepthVariation(_trackingSystem._selectionSquares, rects[i], 30, 8);
+
+                    foreach (var item in rect)
+                    {
+                        if (!rects.Contains(item))
+                        {
+                            rects.Add(item);
+                        }
+                    }
+                }
+            }
+            return rects;
+        }
+        private IEnumerable<Rectangle> RecognizeHead( List<Rectangle> setOfMinY,  List<Rectangle> setOfMinX,  List<Rectangle> setOfMaxX,  List<Rectangle> setOfMinZ)
+        {
+            return setOfMinY;
         }
     }
 

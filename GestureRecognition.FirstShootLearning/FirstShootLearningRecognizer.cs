@@ -7,6 +7,11 @@ namespace GestureRecognition.FirstShootLearning
 {
     public class FirstShootLearningRecognizer
     {
-        
+        public FirstShootLearningRecognizer()
+        {
+
+        }
+
+
     }
 }

@@ -51,6 +51,8 @@
             this.LearnGestureButton = new System.Windows.Forms.Button();
             this.LoadGestureClick = new System.Windows.Forms.Button();
             this.lineShape2 = new Microsoft.VisualBasic.PowerPacks.LineShape();
+            this.SaveFrameOnClick = new System.Windows.Forms.Button();
+            this.HandCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.HistogramPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -243,7 +245,7 @@
             // 
             // LearnGestureButton
             // 
-            this.LearnGestureButton.Location = new System.Drawing.Point(348, 323);
+            this.LearnGestureButton.Location = new System.Drawing.Point(348, 334);
             this.LearnGestureButton.Name = "LearnGestureButton";
             this.LearnGestureButton.Size = new System.Drawing.Size(119, 23);
             this.LearnGestureButton.TabIndex = 20;
@@ -269,11 +271,33 @@
             this.lineShape2.Y1 = 25;
             this.lineShape2.Y2 = 406;
             // 
+            // SaveFrameOnClick
+            // 
+            this.SaveFrameOnClick.Location = new System.Drawing.Point(578, 272);
+            this.SaveFrameOnClick.Name = "SaveFrameOnClick";
+            this.SaveFrameOnClick.Size = new System.Drawing.Size(94, 23);
+            this.SaveFrameOnClick.TabIndex = 22;
+            this.SaveFrameOnClick.Text = "Save Frame";
+            this.SaveFrameOnClick.UseVisualStyleBackColor = true;
+            this.SaveFrameOnClick.Click += new System.EventHandler(this.SaveFrameOnClick_Click);
+            // 
+            // HandCheckBox
+            // 
+            this.HandCheckBox.AutoSize = true;
+            this.HandCheckBox.Location = new System.Drawing.Point(348, 301);
+            this.HandCheckBox.Name = "HandCheckBox";
+            this.HandCheckBox.Size = new System.Drawing.Size(52, 17);
+            this.HandCheckBox.TabIndex = 23;
+            this.HandCheckBox.Text = "Head";
+            this.HandCheckBox.UseVisualStyleBackColor = true;
+            // 
             // VideoAnalyserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(686, 435);
+            this.Controls.Add(this.HandCheckBox);
+            this.Controls.Add(this.SaveFrameOnClick);
             this.Controls.Add(this.LoadGestureClick);
             this.Controls.Add(this.LearnGestureButton);
             this.Controls.Add(this.RightHandCheckBox);
@@ -330,5 +354,7 @@
         private System.Windows.Forms.Button LearnGestureButton;
         private System.Windows.Forms.Button LoadGestureClick;
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape2;
+        private System.Windows.Forms.Button SaveFrameOnClick;
+        public System.Windows.Forms.CheckBox HandCheckBox;
     }
 }
